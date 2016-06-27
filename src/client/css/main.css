@@ -18,6 +18,8 @@ body {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: black;
+  color: white;
 }
 
 p {
@@ -56,6 +58,17 @@ button {
   height: 40px;
   padding: 8px 18px;
   text-decoration: none;
+}
+
+.button {
+  padding: 8px 10px;
+  font-size: 16px;
+  display:inline-block;
+}
+
+.button.primary {
+  background-color: #03b2fb;
+  color:white;
 }
 
 button:hover {
