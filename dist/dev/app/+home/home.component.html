@@ -11,9 +11,21 @@
 <ul>
   <li *ngFor="let name of nameListService.get() | async">{{name}}</li>
 </ul> -->
-<h1>Beer Tasting Party</h1>
-<div class="splash">
-  <img src="./assets/svg/beer.svg" alt="Beer Splash">
+<div class="container" *ngIf="!creatingSession">
+  <h1>Beer Tasting Party</h1>
+  <div class="splash">
+    <img src="./assets/svg/beer.svg" alt="Beer Splash">
+  </div>
+  <p>A fun, self-hosted, open-source blind beer tasting party app.</p>
+  <div class="button primary" (click)="start()">Start Now</div>
 </div>
-<p>A fun, self-hosted, open-source blind beer tasting party app.</p>
-<div class="button primary">Start Now</div>
+
+<div class="container" *ngIf="creatingSession">
+  <h2>Start a new Beer Tasting Session</h2>
+  <div class="form">
+    <label for="session-name">Name the tasting session</label>
+    <input type="text" [(ngModel)]="sessionName" placeholder="session name">
+    <p *ngIf="sessionNameError">Please name your tasting session!</p>
+  </div>
+  <div class="button primary" (click)="submitSession()">Submit</div>
+</div>

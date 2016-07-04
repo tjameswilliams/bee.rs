@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- inject:css -->
-  <link rel="stylesheet" href="/dist/dev/css/main.css?1466997904584">
+  <link rel="stylesheet" href="/dist/dev/css/main.css?1467658916551">
   <!-- endinject -->
 </head>
 <body>
@@ -21,9 +21,9 @@
   </script>
 
   <!-- shims:js -->
-  <script src="/node_modules/systemjs/dist/system-polyfills.src.js?1466997904580"></script>
-  <script src="/node_modules/core-js/client/shim.min.js?1466997904581"></script>
-  <script src="/node_modules/systemjs/dist/system.src.js?1466997904581"></script>
+  <script src="/node_modules/systemjs/dist/system-polyfills.src.js?1467658916547"></script>
+  <script src="/node_modules/core-js/client/shim.min.js?1467658916548"></script>
+  <script src="/node_modules/systemjs/dist/system.src.js?1467658916548"></script>
   <!-- endinject -->
 
   
@@ -45,6 +45,8 @@
     "@angular/platform-browser": "node_modules/@angular/platform-browser/bundles/platform-browser.umd.js",
     "@angular/platform-browser-dynamic": "node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js",
     "@angular/router": "node_modules/@angular/router/index.js",
+    "socket.io-client": "node_modules/socket.io-client/socket.io.js",
+    "angular2-cookie": "node_modules/angular2-cookie",
     "rxjs/*": "node_modules/rxjs/*",
     "app/*": "/app/*",
     "*": "node_modules/*"
@@ -52,6 +54,13 @@
   "packages": {
     "rxjs": {
       "defaultExtension": false
+    },
+    "socket.io-client": {
+      "defaultExtension": "js"
+    },
+    "angular2-cookie": {
+      "main": "core.js",
+      "defaultExtension": "js"
     }
   }
 })
@@ -59,8 +68,8 @@
   
 
   <!-- libs:js -->
-  <script src="/node_modules/zone.js/dist/zone.js?1466997904583"></script>
-  <script src="/node_modules/rxjs/bundles/Rx.js?1466997904584"></script>
+  <script src="/node_modules/zone.js/dist/zone.js?1467658916550"></script>
+  <script src="/node_modules/rxjs/bundles/Rx.js?1467658916550"></script>
   <!-- endinject -->
 
   <!-- inject:js -->

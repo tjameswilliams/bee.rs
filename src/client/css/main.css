@@ -15,11 +15,19 @@ div {
 /* Set up a default font and some padding to provide breathing room */
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 16px;
+  font-size: 22px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: black;
   color: white;
+  padding: 5px 0 20px 0;
+}
+
+h2 {
+  font-size: 32px;
+  text-transform: uppercase;
+  font-weight: 300;
+  text-align: center;
 }
 
 p {
@@ -41,11 +49,14 @@ li {
 }
 
 input {
-  border: 1px solid #106cc8;
-  font-size: 14px;
-  height: 40px;
-  outline: none;
-  padding: 8px;
+  width: 100%;
+  margin: 12px 0;
+  height: auto;
+  background-color: #cae6ff;
+  border: 2px solid #03b2fb;
+  font-size: 25px;
+  line-height: 37px;
+  padding: 5px 10px;
 }
 
 button {
@@ -64,6 +75,7 @@ button {
   padding: 8px 10px;
   font-size: 16px;
   display:inline-block;
+  cursor:pointer;
 }
 
 .button.primary {
@@ -73,4 +85,20 @@ button {
 
 button:hover {
   background-color: #28739e;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.container .button.fixed {
+  position:absolute;
+  bottom: 20px;
+  width: 90%;
+}
+
+.form {
+  margin-bottom: 40px;
 }

@@ -1,8 +1,12 @@
-import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 import { HTTP_PROVIDERS } from '@angular/http';
+import { CookieService } from 'angular2-cookie/core';
 
-import { Config, NameListService, NavbarComponent, ToolbarComponent } from './shared/index';
+
+import { Config, NameListService, NavbarComponent, ToolbarComponent, SocketService } from './shared/index';
+
+import { UserService } from './shared/user/user.service';
 
 /**
  * This class represents the main application component. Within the @Routes annotation is the configuration of the
@@ -13,10 +17,29 @@ import { Config, NameListService, NavbarComponent, ToolbarComponent } from './sh
   selector: 'sd-app',
   viewProviders: [NameListService, HTTP_PROVIDERS],
   templateUrl: 'app.component.html',
-  directives: [ROUTER_DIRECTIVES, NavbarComponent, ToolbarComponent]
+  directives: [ROUTER_DIRECTIVES, NavbarComponent, ToolbarComponent],
+  providers: [CookieService,SocketService,UserService]
 })
-export class AppComponent {
-  constructor() {
+export class AppComponent implements OnInit {
+  constructor(
+    private io: SocketService,
+    private user: UserService,
+    private router: Router
+  ) {
     console.log('Environment config', Config);
+    this.setSocketEvents();
+  }
+  ngOnInit() {
+    //this.io.socket.emit('appContext:getRoute')
+  }
+  setSocketEvents() {
+    var self = this;
+    this.io.socket.on('route:redirect', function(route: any) {
+      self.redirect(route);
+    });
+  }
+  redirect(route: any) {
+    console.log(route);
+    this.router.navigate([route]);
   }
 }

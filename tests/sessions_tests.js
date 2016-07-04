@@ -4,9 +4,7 @@ var test = require('unit.js');
 
 var sessions = require(__dirname+'/../modules/sessions');
 sessions = new sessions();
-// sessions.getSessions((err,res) => {
-// 	test.array(res).is([]);
-// });
+
 describe('Testing Sessions Model', () => {
 	// there should be no sessions to begin with
 	it('sessions suite', (done) => {
@@ -29,12 +27,14 @@ describe('Testing Sessions Model', () => {
 						sessions.getOpenSession((err,res) => {
 							if(err) throw err;
 							test.array(res).is([]);
-							done();
+							sessions.deleteSession(session.id, (err,res) => {
+								if(err) throw err;
+								done();
+							});
 						});
 					});
 				});
 			});
 		});
 	});
-
 });

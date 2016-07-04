@@ -16,7 +16,8 @@ var SQL = {
 		WHERE session_open = 1
 		LIMIT 1;`,
 	createSession : `INSERT INTO sessions (name,session_open) VALUES (?,1)`,
-	closeSession: `UPDATE sessions SET session_open = 0 WHERE id = ?`
+	closeSession: `UPDATE sessions SET session_open = 0 WHERE id = ?`,
+	deleteSession: `DELETE FROM sessions WHERE id = ?`
 };
 
 module.exports = class Sessions extends MySQLOb {
@@ -31,5 +32,8 @@ module.exports = class Sessions extends MySQLOb {
 	}
 	closeSession(sessionId,cb) {
 		this.doSql('closeSession',[sessionId],cb);
+	}
+	deleteSession(sessionId,cb) {
+		this.doSql('deleteSession',[sessionId],cb);
 	}
 }
