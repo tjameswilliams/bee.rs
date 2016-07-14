@@ -32,6 +32,7 @@ var SQL = {
 		b.id,
 		b.brand,
 		b.name,
+		b.type,
 		IF(n.id IS NULL,0,1) as used
 		FROM beers bref
 		JOIN beers b ON b.session_id = bref.session_id
@@ -44,11 +45,10 @@ var SQL = {
 		u.id,
 		u.name,
 		n.rating,
-		s.id as session_id
+		b.session_id
 		FROM notes n
 		JOIN users u ON u.id = n.user_id
 		JOIN beers b ON b.id = n.beer_id
-		JOIN sessions s ON s.id = b.session_id
 		WHERE n.id = ?
 		LIMIT 1;`,
 	getRatings: `SELECT
@@ -57,7 +57,19 @@ var SQL = {
 		n.rating
 		FROM notes n
 		JOIN users u ON u.id = n.user_id
-		WHERE n.beer_id = ?`
+		WHERE n.beer_id = ?`,
+	getUserSummary: `SELECT
+		b.round_number,
+		CONCAT(b.brand, ' - ', b.name, ', ', b.type) as name,
+		n.notes,
+		n.rating,
+		(n.beer_guess = n.beer_id) as guessed_correct,
+		CONCAT(bg.brand, ' - ', bg.name, ', ', bg.type) as guess_name
+		FROM notes n
+		JOIN beers b ON n.beer_id = b.id
+		JOIN beers bg ON n.beer_guess = bg.id
+		WHERE n.user_id = ?
+		ORDER BY b.round_number`
 };
 
 module.exports = class Beers extends MySQLOb {
@@ -93,5 +105,8 @@ module.exports = class Beers extends MySQLOb {
 	}
 	getRatings(beerId,cb) {
 		this.doSql('getRatings',[beerId],cb);
+	}
+	getSummary(userId,cb) {
+		this.doSql('getUserSummary',[userId],cb);
 	}
 }

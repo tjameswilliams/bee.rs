@@ -8,9 +8,11 @@
   </div>
 	<div class="form">
     <label for="brand">The brand or brewery</label>
-    <input #brand [(ngModel)]="beer.brand" placeholder="brewery">
-		<label for="brand">Name</label>
-    <input #brand [(ngModel)]="beer.name" (keyup.enter)="save()" placeholder="name">
+    <input #brand [(ngModel)]="beer.brand" (keyup.enter)="save()" placeholder="brewery">
+		<label for="name">Name</label>
+    <input [(ngModel)]="beer.name" (keyup.enter)="save()" placeholder="name">
+		<label for="type">Type</label>
+    <input [(ngModel)]="beer.type" (keyup.enter)="save()" placeholder="type">
 		<p *ngIf="beer.error">{{beer.error}}</p>
   </div>
 	<div class="button danger" *ngIf="beer.id" (click)="deleting = true">Delete</div>

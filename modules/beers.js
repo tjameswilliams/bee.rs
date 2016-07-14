@@ -2,13 +2,15 @@
 let MySQLOb = require('./mysqlob');
 
 var SQL = {
-	upsertBeer: `INSERT INTO beers (id,unique_code,session_id,brand,name)
-		VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE
+	upsertBeer: `INSERT INTO beers (id,unique_code,session_id,brand,name,type)
+		VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE
 		brand = VALUES(brand),
-		name = VALUES(name);`,
+		name = VALUES(name),
+		type = VALUES(type);`,
 	deleteBeer: `DELETE FROM beers WHERE id = ?`,
 	openRound: `UPDATE beers
-		SET tasting_in_process = 1
+		SET tasting_in_process = 1,
+		round_number = ?
 		WHERE id = ?;`,
 	closeRound: `UPDATE beers
 		SET tasting_complete = 1,
@@ -19,8 +21,10 @@ var SQL = {
 		unique_code,
 		brand,
 		name,
+		type,
 		tasting_in_process,
-		tasting_complete
+		tasting_complete,
+		session_id
 		FROM beers
 		WHERE tasting_complete = 0
 		AND session_id = ?
@@ -37,6 +41,12 @@ var SQL = {
 	getBeer: `SELECT *
 		FROM beers b
 		WHERE b.id = ?
+		LIMIT 1;`,
+	getRoundNumber: `SELECT
+		COALESCE(COUNT(*),0)+1 as round_number
+		FROM beers
+		WHERE tasting_complete = 1
+		AND session_id = ?
 		LIMIT 1;`
 };
 
@@ -70,7 +80,8 @@ module.exports = class Beers extends MySQLOb {
 			beer.unique_code,
 			beer.session_id,
 			beer.brand,
-			beer.name
+			beer.name,
+			beer.type
 		], cb);
 	}
 	getBeer(beerId,cb) {
@@ -85,10 +96,13 @@ module.exports = class Beers extends MySQLOb {
 			self.doSql('getNextRandomBeer',[sessionId],(err,beer) => {
 				if(err) throw err;
 				if( beer.id ) {
-					self.doSql('openRound',[beer.id],(err,res) => {
+					self.doSql('getRoundNumber',[beer.session_id], (err,res) => {
 						if(err) throw err;
-						beer.tasting_in_process = 1;
-						cb(beer);
+						self.doSql('openRound',[res.round_number,beer.id],(err,res) => {
+							if(err) throw err;
+							beer.tasting_in_process = 1;
+							cb(beer);
+						});
 					});
 				} else {
 					cb(false);
@@ -98,7 +112,9 @@ module.exports = class Beers extends MySQLOb {
 		// --> if a beer ID is supplied, we open that session and advance.
 		if( beerId ) {
 			self.doSql('closeRound',[beerId],(err,res) => {
-				getAndOpen(cb);
+				setTimeout(function() {
+					getAndOpen(cb);
+				},100);
 			});
 		} else {
 			getAndOpen(cb);

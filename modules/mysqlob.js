@@ -2,23 +2,22 @@
 var mysql = require('mysql');
 var createConnection = mysql.createConnection;
 
+var connectionOpts = {
+	host     : 'localhost',
+	user     : 'beer_admin',
+	database : 'beer_tasting_app',
+	password : '_B33rZ!_'
+};
+
+var connection = createConnection(connectionOpts);
+
 module.exports = class MySQLOb {
 	constructor(SQL) {
 		this.log = false;
-		this.connectionOpts = {
-			host     : 'localhost',
-			user     : 'beer_admin',
-			database : 'beer_tasting_app',
-			password : '_B33rZ!_'
-		};
-		this.connected = false;
-		this.connection = createConnection(this.connectionOpts);
+		this.connection = connection;
 		this.SQL = SQL;
 	}
 	query(sql, values, cb) {
-		if( !this.connected) {
-			this.connection = createConnection(this.connectionOpts);
-		}
 		try {
 			if(!values){
 				this.connection.query(sql, cb);

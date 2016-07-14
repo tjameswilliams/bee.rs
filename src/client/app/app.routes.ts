@@ -6,6 +6,7 @@ import { HostRoutes } from './+host/index';
 import { ManifestRoutes } from './+manifest/manifest.routes';
 import { SessionRoutes } from './+session/session.routes';
 import { TasterRoutes } from './+taster/taster.routes';
+import { SummaryRoutes } from './+summary/summary.routes';
 
 const routes: RouterConfig = [
   ...HomeRoutes,
@@ -13,7 +14,8 @@ const routes: RouterConfig = [
   ...HostRoutes,
   ...ManifestRoutes,
   ...SessionRoutes,
-  ...TasterRoutes
+  ...TasterRoutes,
+	...SummaryRoutes
 ];
 
 export const APP_ROUTER_PROVIDERS = [

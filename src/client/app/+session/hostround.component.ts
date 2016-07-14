@@ -17,6 +17,8 @@ export class HostRoundComponent implements OnInit {
   sub: any;
   status: any;
   beer: Beer;
+	confirmNextRound: boolean= false;
+	ratingRange: any= [1,2,3,4,5];
 	constructor(
 		private user: UserService,
     private route: ActivatedRoute,
@@ -31,7 +33,17 @@ export class HostRoundComponent implements OnInit {
   			let id = +params['id']; // (+) converts string 'id' to a number
         self.beers.getBeer(id, (beer: Beer) => self.beer = beer);
   		}
+			self.session.getSessionStatus();
   	});
-    self.session.getSessionStatus();
   }
+	nextRound() {
+		var self = this;
+		this.session.advanceSession(self.beer.id, function(res: any) {
+			if( res.id ) {
+				self.router.navigate(['/host-round/'+res.id]);
+			} else {
+				self.router.navigate(['/summary']);
+			}
+    });
+	}
 }

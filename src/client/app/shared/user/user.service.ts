@@ -12,10 +12,12 @@ export class UserService {
 	public error: string;
 	public users: any = [];
 	private cookieOptions: any;
+	private summary: any;
 	constructor(
 		private io: SocketService,
 		public cookies: CookieService,
-		private router: Router
+		private router: Router,
+		private window: Window
 	) {
 		var tomorrow = new Date();
 		tomorrow.setDate(tomorrow.getDate() + 1);
@@ -96,8 +98,19 @@ export class UserService {
 	}
 	redirect(route: any) {
     console.log(route);
-		if( this.router.url !== route ) {
-			this.router.navigate([route]);
+		var self = this;
+		if( self.router.url !== route && ['/beer-manifest','/beer-editor','/start-session'].indexOf(self.router.url) === -1 ) {
+			console.log('redirected');
+			self.router.navigateByUrl(route);
+			//window.location.reload();
 		}
   }
+	getSummary() {
+		var self = this;
+		console.log('gettingSummary');
+		self.io.socket.emit('notes:getSummary', this.id, function(summary: any) {
+			console.log(summary);
+			self.summary = summary;
+		});
+	}
 }

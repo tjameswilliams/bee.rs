@@ -77,7 +77,7 @@ io.on('connection', (socket) => {
 		beers = new beers();
 		beers.nextBeer(data.beer_id,data.session_id, (beer) => {
 			// --> Broadcast the advancement to all users.
-			var route = beer.id ? '/tasting-round/'+beer.id : 'summary';
+			var route = beer ? '/tasting-round/'+beer.id : 'summary';
 			socket.broadcast.emit('route:redirect', route);
 			cb(beer);
 		});
@@ -88,6 +88,15 @@ io.on('connection', (socket) => {
 		sessions = new sessions();
 		sessions.sessionStatus(sessionId,(status) => {
 			cb(status);
+		});
+	});
+
+	socket.on('sessions:getLeaderBoard', (sessionId,cb) => {
+		var sessions = require(__dirname+'/modules/sessions');
+		sessions = new sessions();
+		sessions.leaderboard(sessionId,(err,leaderboard) => {
+			if( err ) throw err;
+			cb(leaderboard);
 		});
 	});
 
@@ -170,6 +179,15 @@ io.on('connection', (socket) => {
 		notes.getRatings(beerId,(err,ratings) => {
 			if(err) throw err;
 			cb(ratings);
+		});
+	});
+
+	socket.on('notes:getSummary', (userId,cb) => {
+		var notes = require(__dirname+'/modules/notes');
+		notes = new notes();
+		notes.getSummary(userId,(err,summary) => {
+			if(err) throw err;
+			cb(summary);
 		});
 	});
 });

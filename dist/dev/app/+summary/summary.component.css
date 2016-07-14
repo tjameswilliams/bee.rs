@@ -1,0 +1,58 @@
+p {
+
+}
+
+table {
+	width: 90%;
+	margin: 0 auto;
+	text-align:left;
+}
+
+table tr td:nth-child(2),
+table tr th:nth-child(2) {
+	padding: 5px 0 5px 10px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.41);
+	height: 70px;
+}
+
+table tr td:nth-child(3),
+table tr th:nth-child(3) {
+	padding: 5px 0;
+	text-align:center;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.41);
+}
+
+.rating {
+	display: table;
+	width:90%;
+	margin: 0 auto;
+}
+
+.rating > div {
+	display: table-cell;
+}
+
+.rating > div img {
+	width: 40px;
+}
+
+span.guess {
+
+}
+
+span.guess:before {
+	display: inline-block;
+	margin-right: 20px;
+	color: #ff5858;
+	content: '✗ ';
+	font-size: 37px;
+}
+
+span.guess.correct-guess {
+
+}
+
+span.guess.correct-guess:before {
+	content: '✔ ';
+	color: #6eff6e;
+}

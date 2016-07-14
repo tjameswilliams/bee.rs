@@ -28,26 +28,27 @@ export class TastingRoundComponent implements OnInit {
     private session: SessionService,
 		private notes: NoteService
 	) {}
-	ngOnInit() {
+	ngOnInit(): void {
     var self = this;
     this.sub = this.route.params.subscribe(params => {
   		if( params['id'] ) {
   			let id = +params['id']; // (+) converts string 'id' to a number
-        self.beers.getBeer(id, (beer: Beer) => {
+				self.beers.getBeer(id, (beer: Beer) => {
 					self.beer = beer;
 					self.notes.init(beer.id,self.user.id);
 				});
   		}
+			self.session.getSessionStatus();
+			self.complete = false;
   	});
-    self.session.getSessionStatus();
   }
-	setRating(rating: number) {
+	setRating(rating: number): void {
 		this.notes.note.setRating(rating);
 	}
-	isReady() {
-		return this.notes.note.rating && this.notes.note.notes && this.notes.note.notes.length > 0 && this.notes.note.beer_guess;
+	isReady(): boolean {
+		return Boolean(this.notes.note.rating && this.notes.note.notes && this.notes.note.notes.length > 0 && this.notes.note.beer_guess);
 	}
-	done() {
+	done(): void {
 		var self = this;
 		this.notes.save(function() {
 			self.complete = true;

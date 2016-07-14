@@ -57,4 +57,16 @@ export class SessionService {
 			});
 		}
 	}
+	getLeaderBoard(cb: Function) {
+		var self = this;
+		if( !self.id ) {
+			self.init(function() {
+				self.getLeaderBoard(cb);
+			});
+		} else {
+			self.io.socket.emit('sessions:getLeaderBoard', self.id, function(leaderboard: any) {
+				cb(leaderboard);
+			});
+		}
+	}
 }

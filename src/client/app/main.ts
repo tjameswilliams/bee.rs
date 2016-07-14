@@ -1,11 +1,10 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, provide } from '@angular/core';
 import { bootstrap } from '@angular/platform-browser-dynamic';
 
 import { APP_ROUTER_PROVIDERS } from './app.routes';
 import { AppComponent } from './app.component';
-
 
 if ('<%= ENV %>' === 'prod') { enableProdMode(); }
 
@@ -20,7 +19,8 @@ bootstrap(AppComponent, [
   {
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>'
-  }
+  },
+	provide(Window, {useValue: window})
 ]);
 
 // In order to start the Service Worker located at "./worker.js"

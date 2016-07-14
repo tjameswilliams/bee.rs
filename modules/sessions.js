@@ -44,7 +44,8 @@ var SQL = {
 		`,
 	tasterRoundStatus: `SELECT
 		t.name,
-		IF(n.id IS NULL,0,1) as complete
+		IF(n.id IS NULL,0,1) as complete,
+		IF(n.rating IS NULL,0,n.rating) as rating
 		FROM users t
 		LEFT JOIN notes n ON (
 			n.user_id = t.id AND
@@ -52,7 +53,17 @@ var SQL = {
 		)
 		WHERE t.session_id = ?
 		AND t.user_type = 'taster'
-		`
+		`,
+	getLeaderboard: `SELECT
+		u.id,
+		u.name,
+		SUM(IF(n.id IS NULL,0,IF(n.beer_guess =n.beer_id,1,0))) as correct_guesses
+		FROM users u
+		LEFT JOIN notes n ON n.user_id = u.id
+		WHERE u.session_id = ?
+		AND u.user_type = 'taster'
+		GROUP BY u.id
+		ORDER BY SUM(IF(n.id IS NULL,0,IF(n.beer_guess =n.beer_id,1,0))) DESC`
 };
 
 module.exports = class Sessions extends MySQLOb {
@@ -70,6 +81,9 @@ module.exports = class Sessions extends MySQLOb {
 	}
 	deleteSession(sessionId,cb) {
 		this.doSql('deleteSession',[sessionId],cb);
+	}
+	leaderboard(sessionId,cb) {
+		this.doSql('getLeaderboard',[sessionId],cb);
 	}
 	sessionStatus(sessionId,cb) {
 		// session status should say how many beers tasted, how many beers total and

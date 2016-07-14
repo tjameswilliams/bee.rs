@@ -20,7 +20,7 @@
 			[value]="option.id"
 			[disabled]="option.used && notes.note.beer_guess != option.id"
 		>
-			{{option.brand}} &mdash; {{option.name}}
+			{{option.brand}} &mdash; {{option.name}} <em>{{option.type}}</em>
 		</option>
 	</select>
 	<label for="notes">Tasting notes</label>

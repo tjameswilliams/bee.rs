@@ -28,6 +28,7 @@ CREATE TABLE `beers` (
   `brand` VARCHAR(100) DEFAULT NULL,
   `name` VARCHAR(300) DEFAULT NULL,
 	`type` VARCHAR(300) DEFAULT NULL,
+	`round_number` INT(5) DEFAULT NULL,
   `tasting_in_process` TINYINT(1) DEFAULT 0,
   `tasting_complete` TINYINT(1) DEFAULT 0,
   FOREIGN KEY (`session_id`) REFERENCES `sessions`(`id`) ON DELETE CASCADE

@@ -1,0 +1,41 @@
+<div class="container">
+	<h2>Leaderboard</h2>
+	<table *ngIf="leaderboard">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Taster</th>
+				<th>Correct</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let user of leaderboard; let rank = index">
+				<td>
+					<ribbon *ngIf="rank <= 2" [rank]="(rank+1)"></ribbon>
+				</td>
+				<td>
+					{{user.name}}
+				</td>
+				<td>{{user.correct_guesses}}</td>
+			</tr>
+		</tbody>
+	</table>
+	<div *ngIf="user.user_type === 'taster'">
+		<h2>Your Results</h2>
+		<div *ngFor="let note of user.summary; let i = index">
+			<hr *ngIf="i !== 0">
+			<h3>Round {{note.round_number}}</h3>
+			<p>
+				<span [class.correct-guess]="note.guessed_correct" class="guess">{{note.name}}</span>
+				<em *ngIf="!note.guessed_correct"><br /><br /> you guessed - {{note.guess_name}}</em>
+			</p>
+			<div class="rating">
+				<div *ngFor="let ratingOpt of ratingRange">
+					<img *ngIf="note.rating < ratingOpt" src="./assets/svg/star_empty.svg" alt="{{ratingOpt}}">
+					<img *ngIf="note.rating >= ratingOpt" src="./assets/svg/star_full.svg" alt="{{ratingOpt}}">
+				</div>
+			</div>
+			<p><strong>Tasting Notes:</strong> {{note.notes}}</p>
+		</div>
+	</div>
+</div>

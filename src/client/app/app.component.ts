@@ -26,9 +26,9 @@ export class AppComponent implements OnInit {
     private io: SocketService,
     private user: UserService,
     private session: SessionService,
-    private router: Router
+    private router: Router,
+		private window: Window
   ) {
-    console.log('Environment config', Config);
     this.setSocketEvents();
   }
   ngOnInit() {
@@ -39,6 +39,9 @@ export class AppComponent implements OnInit {
       }
     });
     //this.io.socket.emit('appContext:getRoute')
+    self.window.addEventListener('focus', function() {
+			self.focusWindow();
+		});
   }
   setSocketEvents() {
     var self = this;
@@ -46,5 +49,7 @@ export class AppComponent implements OnInit {
       self.session.init(false);
     });
   }
-
+	focusWindow() {
+		this.user.getAppContext();
+	}
 }

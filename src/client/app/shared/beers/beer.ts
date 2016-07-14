@@ -4,6 +4,7 @@ export class Beer {
 	session_id: number;
 	brand: string= '';
 	name: string= '';
+	type: string= '';
 	unique_code: string= '';
 	created_at: Date= new Date();
 	tasting_in_process: number= 0;
