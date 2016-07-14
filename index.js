@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
 			users.getUser(res.insertId,(err,user) => {
 				if(err) throw err;
 				if( user.user_id !== 'host' ) {
-					socket.broadcast.emit('users:userAdded', user);
+					io.sockets.emit('users:userAdded', user);
 				}
 			});
 		});
@@ -79,7 +79,7 @@ io.on('connection', (socket) => {
 			if( err ) throw err;
 			// --> Broadcast the advancement to all users.
 			var route = beer.id ? '/tasting-round/'+beer.id : 'summary';
-			io.sockets.emit('route:redirect', route);
+			socket.broadcast.emit('route:redirect', route);
 			cb(beer);
 		});
 	});
