@@ -76,7 +76,6 @@ io.on('connection', (socket) => {
 		var beers = require(__dirname+'/modules/beers');
 		beers = new beers();
 		beers.nextBeer(data.beer_id,data.session_id, (beer) => {
-			if( err ) throw err;
 			// --> Broadcast the advancement to all users.
 			var route = beer.id ? '/tasting-round/'+beer.id : 'summary';
 			socket.broadcast.emit('route:redirect', route);
