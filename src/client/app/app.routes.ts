@@ -2,10 +2,18 @@ import { provideRouter, RouterConfig } from '@angular/router';
 
 import { AboutRoutes } from './+about/index';
 import { HomeRoutes } from './+home/index';
+import { HostRoutes } from './+host/index';
+import { ManifestRoutes } from './+manifest/manifest.routes';
+import { SessionRoutes } from './+session/session.routes';
+import { TasterRoutes } from './+taster/taster.routes';
 
 const routes: RouterConfig = [
   ...HomeRoutes,
-  ...AboutRoutes
+  ...AboutRoutes,
+  ...HostRoutes,
+  ...ManifestRoutes,
+  ...SessionRoutes,
+  ...TasterRoutes
 ];
 
 export const APP_ROUTER_PROVIDERS = [

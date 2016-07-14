@@ -13,7 +13,12 @@ var SQL = {
 		LIMIT 1;`,
 	getUser: `SELECT * FROM users
 		WHERE id = ?
-		LIMIT 1;`
+		LIMIT 1;`,
+	getUsers: `SELECT u.*
+		FROM users u
+		JOIN sessions s ON s.id = u.session_id
+		WHERE s.session_open = 1
+		AND u.user_type != 'host'`
 };
 
 module.exports = class Users extends MySQLOb {
@@ -33,5 +38,8 @@ module.exports = class Users extends MySQLOb {
 	}
 	getUser(userId,cb) {
 		this.doSql('getUser',[userId],cb);
+	}
+	getUsers(cb) {
+		this.doSql('getUsers',cb);
 	}
 }

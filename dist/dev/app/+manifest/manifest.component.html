@@ -1,0 +1,15 @@
+<div class="container">
+	<h2>Beer Manifest</h2>
+  <div class="splash">
+    <img src="./assets/svg/beers.svg" alt="Beers Splash" class="smaller">
+  </div>
+	<ol *ngIf="beers.list.length" class="manifest">
+		<li *ngFor="let beer of beers.list; let i = index" (click)="goToBeer(beer.id)">
+			<small>Beer #{{i+1}}:</small>
+			{{beer.unique_code}}
+		</li>
+	</ol>
+	<p *ngIf="!beers.list.length">There are no beers in your manifest yet!</p>
+	<div class="button primary" (click)="addBeer()">Add a Beer</div>
+	<a class="button secondary" *ngIf="beers.list.length" [routerLink]="['/start-session']">Done Adding Beers</a>
+</div>

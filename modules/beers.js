@@ -29,12 +29,23 @@ var SQL = {
 	getByUniqueCode: `SELECT id
 		FROM beers
 		WHERE unique_code = ?
-		AND session_id = ? LIMIT 1;`
+		AND session_id = ? LIMIT 1;`,
+	getSessionBeers: `SELECT b.*
+		FROM beers b
+		JOIN sessions s ON s.id = b.session_id
+		WHERE s.id = ?`,
+	getBeer: `SELECT *
+		FROM beers b
+		WHERE b.id = ?
+		LIMIT 1;`
 };
 
 module.exports = class Beers extends MySQLOb {
 	constructor() {
 		super(SQL);
+	}
+	getSessionBeers(sessionId,cb) {
+		this.doSql('getSessionBeers',[sessionId],cb);
 	}
 	generateUniqueCode(sessionId,cb) {
 		var self = this;
@@ -61,6 +72,12 @@ module.exports = class Beers extends MySQLOb {
 			beer.brand,
 			beer.name
 		], cb);
+	}
+	getBeer(beerId,cb) {
+		this.doSql('getBeer',beerId,cb);
+	}
+	deleteBeer(beerId,cb) {
+		this.doSql('deleteBeer',beerId,cb);
 	}
 	nextBeer(beerId,sessionId,cb) {
 		var self = this;

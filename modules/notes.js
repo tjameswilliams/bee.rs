@@ -9,12 +9,15 @@ var SQL = {
 		notes=VALUES(notes)`,
 	getNoteForUserForBeer: `SELECT
 		IF(n.beer_guess = b.id,1,0) as guessed_correct,
-		b.id,
+		b.id as beer_id,
 		b.unique_code,
 		b.brand as brand,
 		b.name as name,
+		n.user_id,
+		n.id,
 		n.rating,
 		n.notes,
+		n.beer_guess,
 		g.name as guess_name,
 		g.id as guess_id,
 		s.session_open
@@ -24,7 +27,37 @@ var SQL = {
 		LEFT JOIN beers g ON g.id = n.beer_guess
 		WHERE n.beer_id = ?
 		AND n.user_id = ?
-		LIMIT 1;`
+		LIMIT 1;`,
+	getBeerOptionsForNote: `SELECT
+		b.id,
+		b.brand,
+		b.name,
+		IF(n.id IS NULL,0,1) as used
+		FROM beers bref
+		JOIN beers b ON b.session_id = bref.session_id
+		LEFT JOIN notes n ON (
+			n.beer_id = b.id AND
+			n.user_id = ?
+		)
+		WHERE bref.id = ?`,
+	getUserRating: `SELECT
+		u.id,
+		u.name,
+		n.rating,
+		s.id as session_id
+		FROM notes n
+		JOIN users u ON u.id = n.user_id
+		JOIN beers b ON b.id = n.beer_id
+		JOIN sessions s ON s.id = b.session_id
+		WHERE n.id = ?
+		LIMIT 1;`,
+	getRatings: `SELECT
+		u.id,
+		u.name,
+		n.rating
+		FROM notes n
+		JOIN users u ON u.id = n.user_id
+		WHERE n.beer_id = ?`
 };
 
 module.exports = class Beers extends MySQLOb {
@@ -42,6 +75,23 @@ module.exports = class Beers extends MySQLOb {
 		],cb);
 	}
 	getNote(beerId,userId,cb) {
-		this.doSql('getNoteForUserForBeer',[beerId,userId], cb);
+		var self = this;
+		this.doSql('getNoteForUserForBeer',[beerId,userId], (err,note) => {
+			if( err ) throw err;
+			if( !note.id ) {
+				note = {};
+			}
+			self.doSql('getBeerOptionsForNote',[userId,beerId], (err,opts) => {
+				if( err ) throw err;
+				note.beer_guess_options = opts;
+				cb(note);
+			});
+		});
+	}
+	getRating(noteId,cb) {
+		this.doSql('getUserRating',[noteId], cb);
+	}
+	getRatings(beerId,cb) {
+		this.doSql('getRatings',[beerId],cb);
 	}
 }

@@ -1,0 +1,13 @@
+<div class="container">
+	<h2>Lobby</h2>
+	<p>We're just waiting for the host to give the all clear and
+		then we'll start the beer tasting session!</p>
+	<div *ngIf="user.users.length">
+		<p><strong>Tasters Ready:</strong></p>
+		<ul>
+			<li *ngFor="let taster of user.users">
+				{{taster.name}}
+			</li>
+		</ul>
+	</div>
+</div>

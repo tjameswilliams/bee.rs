@@ -1,0 +1,35 @@
+h2 > a {
+	color: white;
+}
+
+svg {
+	width: 90%;
+	height: auto;
+}
+
+.splash img {
+	max-width: 280px;
+}
+
+.splash img.smaller {
+	max-width: 120px;
+}
+
+ol {
+	text-align:left;
+}
+
+.manifest {
+	padding: 0;
+}
+
+.manifest li {
+	display: block;
+	font-size: 26px;
+	font-weight: 800;
+	text-align: center;
+	border: 2px solid rgba(255, 255, 255, 0.68);
+	width: 90%;
+	margin: 8px auto;
+	background-color: #045a7d;
+}

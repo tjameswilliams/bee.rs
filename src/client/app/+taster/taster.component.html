@@ -1,0 +1,12 @@
+<div class="container">
+  <h2>You're a Taster!</h2>
+  <div class="splash">
+    <img src="./assets/svg/user.svg" alt="User Splash">
+  </div>
+  <div class="form">
+    <label for="session-name">What's your name?</label>
+    <input #input [(ngModel)]="user.name" (keyup.enter)="submit()" placeholder="taster name">
+    <p *ngIf="user.error">Please supply your name so everyone knows who you are!</p>
+  </div>
+  <div class="button primary" (click)="submit()">Submit</div>
+</div>

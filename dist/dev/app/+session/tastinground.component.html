@@ -1,0 +1,50 @@
+<div class="container" *ngIf="session.status && notes.note && !complete">
+	<h2>Round #{{session.status.total_completed+1}}
+		<small>of {{session.status.total_beers}}</small>
+	</h2>
+	<div class="splash">
+		<img src="./assets/svg/beer.svg" alt="Beer Splash">
+	</div>
+	<label>Rating</label>
+	<div class="rating">
+		<div *ngFor="let ratingOpt of ratingRange" (click)="setRating(ratingOpt)">
+			<img *ngIf="notes.note.rating < ratingOpt" src="./assets/svg/star_empty.svg" alt="{{ratingOpt}}">
+			<img *ngIf="notes.note.rating >= ratingOpt" src="./assets/svg/star_full.svg" alt="{{ratingOpt}}">
+		</div>
+	</div>
+	<label for="beer_guess">What beer is this?</label>
+	{{notes.note.beer_guess}}
+	<select [(ngModel)]="notes.note.beer_guess">
+		<option disabled value="0">Please Select</option>
+		<option *ngFor="let option of notes.note.beer_guess_options"
+			[value]="option.id"
+			[disabled]="option.used && notes.note.beer_guess != option.id"
+		>
+			{{option.brand}} &mdash; {{option.name}}
+		</option>
+	</select>
+	<label for="notes">Tasting notes</label>
+	<textarea autosize [(ngModel)]="notes.note.notes"></textarea>
+	<div class="button primary" (click)="done()" *ngIf="isReady()">Done</div>
+</div>
+
+<div class="container" *ngIf="complete">
+	<h2>Round #{{session.status.total_completed+1}}
+		<small>of {{session.status.total_beers}}</small>
+	</h2>
+	<div class="ratings" *ngIf="notes.ratings">
+		<h3>What did everyone think?</h3>
+		<div *ngFor="let rating of notes.ratingList()">
+			<p>{{rating.name}}</p>
+			<div class="rating">
+				<div *ngFor="let ratingOpt of ratingRange">
+					<img *ngIf="rating.rating < ratingOpt" src="./assets/svg/star_empty.svg" alt="{{ratingOpt}}">
+					<img *ngIf="rating.rating >= ratingOpt" src="./assets/svg/star_full.svg" alt="{{ratingOpt}}">
+				</div>
+			</div>
+		</div>
+	</div>
+	<br />
+	<br />
+	<div class="button" (click)="complete = false">Edit my note</div>
+</div>

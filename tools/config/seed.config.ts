@@ -305,15 +305,16 @@ export class SeedConfig {
       '@angular/platform-browser': `node_modules/@angular/platform-browser/bundles/platform-browser.umd.js`,
       '@angular/platform-browser-dynamic': `node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js`,
       '@angular/router': `node_modules/@angular/router/index.js`,
-      "socket.io-client": "node_modules/socket.io-client/socket.io.js",
-      "angular2-cookie": 'node_modules/angular2-cookie',
+      'socket.io-client': 'node_modules/socket.io-client/socket.io.js',
+      'angular2-cookie': 'node_modules/angular2-cookie',
+			//'angular2-autosize': 'node_modules/angular2-autosize/angular2-autosize',
       'rxjs/*': `node_modules/rxjs/*`,
       'app/*': `/app/*`,
       '*': `node_modules/*`
     },
     packages: {
       rxjs: { defaultExtension: false },
-      "socket.io-client": {"defaultExtension": "js"},
+      'socket.io-client': {'defaultExtension': 'js'},
       'angular2-cookie': { main: 'core.js',  defaultExtension: 'js' }
     }
   };

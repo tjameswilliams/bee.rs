@@ -5,6 +5,7 @@ div {
   border: 0;
   margin: 0;
   padding: 0;
+  text-align:center;
 }
 
 /* Box-sizing border-box */
@@ -28,6 +29,7 @@ h2 {
   text-transform: uppercase;
   font-weight: 300;
   text-align: center;
+  padding: 0 20px;
 }
 
 p {
@@ -36,6 +38,7 @@ p {
   line-height: 20px;
   margin-bottom: 1em;
   margin-top: 1em;
+  padding: 0 20px;
 }
 
 ul {
@@ -48,8 +51,12 @@ li {
   margin-top: 4px;
 }
 
+a {
+  color:white;
+}
+
 input {
-  width: 100%;
+  width: 90%;
   margin: 12px 0;
   height: auto;
   background-color: #cae6ff;
@@ -62,7 +69,7 @@ input {
 button {
   background-color: #106cc8;
   border-style: none;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(255, 255, 254, 0.87);
   cursor: pointer;
   display: inline-block;
   font-size: 14px;
@@ -71,16 +78,33 @@ button {
   text-decoration: none;
 }
 
+
+
 .button {
   padding: 8px 10px;
-  font-size: 16px;
-  display:inline-block;
-  cursor:pointer;
+  display: block;
+  font-size: 26px;
+  font-weight: 800;
+  text-align: center;
+  border: 4px solid rgba(255, 255, 255, 0.68);
+  width: 90%;
+  margin: 18px auto;
+  color: white;
+  text-decoration: none;
 }
 
 .button.primary {
   background-color: #03b2fb;
-  color:white;
+}
+
+.button.danger {
+  background-color: #fb5503;
+}
+
+.button.secondary {
+  background-color: white;
+  color: #828181;
+  border: 4px solid rgba(185, 185, 185, 0.68)
 }
 
 button:hover {
@@ -94,11 +118,30 @@ button:hover {
 }
 
 .container .button.fixed {
-  position:absolute;
+  position: absolute;
   bottom: 20px;
   width: 90%;
 }
 
 .form {
   margin-bottom: 40px;
+}
+
+.splash {
+  text-align:center;
+}
+
+.splash img {
+  max-width: 180px;
+}
+
+
+
+p {
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+  line-height: normal;
 }

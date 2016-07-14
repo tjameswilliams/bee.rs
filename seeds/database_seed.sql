@@ -27,6 +27,7 @@ CREATE TABLE `beers` (
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `brand` VARCHAR(100) DEFAULT NULL,
   `name` VARCHAR(300) DEFAULT NULL,
+	`type` VARCHAR(300) DEFAULT NULL,
   `tasting_in_process` TINYINT(1) DEFAULT 0,
   `tasting_complete` TINYINT(1) DEFAULT 0,
   FOREIGN KEY (`session_id`) REFERENCES `sessions`(`id`) ON DELETE CASCADE

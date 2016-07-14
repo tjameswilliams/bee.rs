@@ -1,0 +1,12 @@
+<div class="container">
+  <h2>You're The Host!</h2>
+  <div class="splash">
+    <img src="./assets/svg/user.svg" alt="User Splash">
+  </div>
+  <div class="form">
+    <label for="session-name">What's your name?</label>
+    <input #input [(ngModel)]="host.name" (keyup.enter)="submit()" placeholder="host name">
+    <p *ngIf="host.error">Please your name so everyone knows who the host is!</p>
+  </div>
+  <div class="button primary" (click)="submit()">Submit</div>
+</div>
