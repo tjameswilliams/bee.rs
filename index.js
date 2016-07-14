@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
 			users.getUser(res.insertId,(err,user) => {
 				if(err) throw err;
 				if( user.user_id !== 'host' ) {
-					io.sockets.emit('users:userAdded', user);
+					socket.broadcast.emit('users:userAdded', user);
 				}
 			});
 		});
