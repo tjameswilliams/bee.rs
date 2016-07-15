@@ -22,14 +22,15 @@ import { SessionService } from './shared/session/session.service';
   providers: [CookieService,SocketService,UserService,SessionService]
 })
 export class AppComponent implements OnInit {
+	window: Window;
   constructor(
     private io: SocketService,
     private user: UserService,
     private session: SessionService,
-    private router: Router,
-		private window: Window
+    private router: Router
   ) {
     this.setSocketEvents();
+		this.window = window;
   }
   ngOnInit() {
     var self = this;

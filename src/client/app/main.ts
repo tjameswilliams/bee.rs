@@ -20,7 +20,6 @@ bootstrap(AppComponent, [
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>'
   },
-	provide(Window, {useValue: window})
 ]);
 
 // In order to start the Service Worker located at "./worker.js"

@@ -16,8 +16,7 @@ export class UserService {
 	constructor(
 		private io: SocketService,
 		public cookies: CookieService,
-		private router: Router,
-		private window: Window
+		private router: Router
 	) {
 		var tomorrow = new Date();
 		tomorrow.setDate(tomorrow.getDate() + 1);
@@ -102,7 +101,7 @@ export class UserService {
 		if( self.router.url !== route && ['/beer-manifest','/beer-editor','/start-session'].indexOf(self.router.url) === -1 ) {
 			console.log('redirected');
 			self.router.navigateByUrl(route);
-			//window.location.reload();
+			//.location.reload();
 		}
   }
 	getSummary() {
