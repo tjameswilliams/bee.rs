@@ -38,9 +38,10 @@
 			<p><strong>Tasting Notes:</strong> {{note.notes}}</p>
 		</div>
 	</div>
-	<div *ngIf="user.user_type === 'host'">
+	<div *ngIf="user.user_type === 'host' && !sessionClosed">
 		<br />
 		<br />
+		<p>Once the session is closed, tasters will not have access to their notes! Close wisely!</p>
 		<div class="button" (click)="closeSession()">Close Session</div>
 	</div>
 </div>
