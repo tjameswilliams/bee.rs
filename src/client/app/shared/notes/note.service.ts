@@ -40,7 +40,7 @@ export class NoteService {
 	getRatings() {
 		var self = this;
 		self.io.socket.emit('notes:getRatings', this.note.beer_id, function(ratings:any) {
-			self.ratings = self.ratings ? self.ratings : {};
+			self.ratings = {};
 			for(let i=0; i<ratings.length; i++) {
 				self.ratings[ratings[i].id] = ratings[i];
 			}

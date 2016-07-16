@@ -11,8 +11,11 @@ var SQL = {
 		WHERE user_type = 'host'
 		AND session_id = ?
 		LIMIT 1;`,
-	getUser: `SELECT * FROM users
-		WHERE id = ?
+	getUser: `SELECT u.*
+		FROM users u
+		JOIN sessions s ON s.id = u.session_id
+		WHERE u.id = ?
+		AND s.session_open = 1
 		LIMIT 1;`,
 	getUsers: `SELECT u.*
 		FROM users u

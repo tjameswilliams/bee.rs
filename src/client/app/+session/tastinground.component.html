@@ -13,7 +13,6 @@
 		</div>
 	</div>
 	<label for="beer_guess">What beer is this?</label>
-	{{notes.note.beer_guess}}
 	<select [(ngModel)]="notes.note.beer_guess">
 		<option disabled value="0">Please Select</option>
 		<option *ngFor="let option of notes.note.beer_guess_options"

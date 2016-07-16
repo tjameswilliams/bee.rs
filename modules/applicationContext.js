@@ -28,12 +28,14 @@ var SQL = {
 		IF(SUM(b.tasting_complete) = COUNT(b.id), 1, 0) as all_tastings_complete,
 		cb.id as current_beer_id
 		FROM users u
+		JOIN sessions s ON s.id = u.session_id
 		LEFT JOIN beers b ON b.session_id = u.session_id
 		LEFT JOIN beers cb ON (
 			cb.session_id = u.session_id AND
 			cb.tasting_in_process = 1
 		)
 		WHERE u.id = ?
+		AND s.session_open = 1
 		GROUP BY b.session_id
 		LIMIT 1;`
 };

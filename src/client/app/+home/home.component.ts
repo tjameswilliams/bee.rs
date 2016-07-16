@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 import { SessionService } from './../shared/session/session.service';
 
@@ -16,24 +17,28 @@ import { SessionService } from './../shared/session/session.service';
 export class HomeComponent {
   creatingSession = false;
 
-  constructor(private session: SessionService) {}
+  constructor(
+		private session: SessionService,
+		private router: Router
+	) {}
 
   start(sessionName: any) {
-    this.creatingSession = true;
-    setTimeout(() => {
-      sessionName.focus();
-    },10);
+		var self = this;
+		this.session.getStartRoute(function(route: string) {
+			if( route === '/new-taster' ) {
+				self.router.navigate([route]);
+			} else {
+				self.creatingSession = true;
+		    setTimeout(() => {
+		      sessionName.focus();
+		    },10);
+			}
+		});
+
   }
 
   submitSession() {
     this.session.setName();
   }
 
-  keyUp(e: KeyboardEvent) {
-    switch(e.keyCode) {
-      case 13:
-        this.submitSession();
-        break;
-    }
-  }
 }

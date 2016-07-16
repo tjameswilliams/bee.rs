@@ -53,6 +53,15 @@ io.on('connection', (socket) => {
 		});
 	});
 
+	// context routes.
+	socket.on('sessions:startRoute', (cb) => {
+		var appContext = require(__dirname+'/modules/applicationContext');
+		appContext = new appContext();
+		appContext.getRoute(null, (route) => {
+			cb(route);
+		});
+	});
+
 	socket.on('sessions:createSession', (session,cb) => {
 		var sessions = require(__dirname+'/modules/sessions');
 		sessions = new sessions();
@@ -60,6 +69,8 @@ io.on('connection', (socket) => {
 			if(err) throw err;
 			cb({id:res.insertId});
 			socket.emit('route:redirect', '/new-host');
+			socket.broadcast.emit('route:redirect', '/new-taster');
+			socket.broadcast.emit('sessions:setSession', session);
 		});
 	});
 
@@ -97,6 +108,15 @@ io.on('connection', (socket) => {
 		sessions.leaderboard(sessionId,(err,leaderboard) => {
 			if( err ) throw err;
 			cb(leaderboard);
+		});
+	});
+
+	socket.on('sessions:closeSession', (sessionId,cb) => {
+		var sessions = require(__dirname+'/modules/sessions');
+		sessions = new sessions();
+		sessions.closeSession(sessionId,(err,res) => {
+			if( err ) throw err;
+			cb();
 		});
 	});
 

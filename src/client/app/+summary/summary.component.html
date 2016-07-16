@@ -38,4 +38,9 @@
 			<p><strong>Tasting Notes:</strong> {{note.notes}}</p>
 		</div>
 	</div>
+	<div *ngIf="user.user_type === 'host'">
+		<br />
+		<br />
+		<div class="button" (click)="closeSession()">Close Session</div>
+	</div>
 </div>

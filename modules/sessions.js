@@ -13,7 +13,7 @@ var SQL = {
 			b.session_id = s.id AND
 			b.tasting_in_process = 1
 		)
-		WHERE session_open = 1
+		WHERE s.session_open = 1
 		LIMIT 1;`,
 	createSession : `INSERT INTO sessions (name,session_open) VALUES (?,1)`,
 	closeSession: `UPDATE sessions SET session_open = 0 WHERE id = ?`,

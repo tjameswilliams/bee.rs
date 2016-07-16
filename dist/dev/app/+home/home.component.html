@@ -11,7 +11,7 @@
   <h2>Start a new Beer Tasting Session</h2>
   <div class="form">
     <label for="session-name">Name the tasting session</label>
-    <input #sessionName [(ngModel)]="session.name" (keyup)="keyUp($event)" placeholder="session name">
+    <input #sessionName [(ngModel)]="session.name" (keyup.enter)="submitSession()" placeholder="session name">
     <p *ngIf="session.error">Please name your tasting session!</p>
   </div>
   <div class="button primary" (click)="submitSession()">Submit</div>

@@ -17,6 +17,7 @@ import { RibbonComponent } from './ribbon.component';
 export class SummaryComponent implements OnInit {
 	leaderboard: any;
 	ratingRange: any= [1,2,3,4,5];
+	sessionClosed: boolean= false;
 	constructor(
 		private user: UserService,
     private router: Router,
@@ -33,4 +34,10 @@ export class SummaryComponent implements OnInit {
 			self.user.getSummary();
 		});
   }
+	closeSession(): void {
+		var self = this;
+		this.session.closeSession(function() {
+			self.sessionClosed = true;
+		});
+	}
 }

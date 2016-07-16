@@ -10,22 +10,32 @@ export class SessionService {
 	status: any;
 	constructor(
 		private io: SocketService
-	) {
-
-	}
+	) { }
 	init(cb: any) {
 		var self = this;
 		this.io.socket.emit('sessions:getOpenSession', function(session: any) {
-			self.id = session.id;
-			self.name = session.session_name;
-			self.initialized.next(session.id);
+			if( session.id ) {
+				self.setSession(session);
+			} else {
+				self.initialized.next(false);
+			}
 			if( cb ) {
 				cb();
 			}
 		});
 		this.io.socket.on('sessions:broadcastStatus', function(status: any) {
-			self.status = status;
+			setTimeout(function() {
+					self.status = status;
+			});
 		});
+		this.io.socket.on('sessions:setSession', function(session: any) {
+			self.setSession(session);
+		});
+	}
+	setSession(session: any) {
+		this.id = session.id;
+		this.name = session.session_name;
+		this.initialized.next(session.id);
 	}
 	setName() {
 		var self = this;
@@ -52,6 +62,7 @@ export class SessionService {
 				self.getSessionStatus();
 			});
 		} else {
+			self.status = null;
 			self.io.socket.emit('sessions:sessionStatus', self.id, function(status: any) {
 				self.status = status;
 			});
@@ -68,5 +79,17 @@ export class SessionService {
 				cb(leaderboard);
 			});
 		}
+	}
+	closeSession(cb: Function) {
+		var self = this;
+		self.io.socket.emit('sessions:closeSession', self.id, function() {
+			cb();
+		});
+	}
+	getStartRoute(cb: Function) {
+		var self = this;
+		self.io.socket.emit('sessions:startRoute', function(route: string) {
+			cb(route);
+		});
 	}
 }
