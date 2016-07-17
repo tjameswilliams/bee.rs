@@ -31,8 +31,8 @@
 			</p>
 			<div class="rating">
 				<div *ngFor="let ratingOpt of ratingRange">
-					<img *ngIf="note.rating < ratingOpt" src="./assets/svg/star_empty.svg" alt="{{ratingOpt}}">
-					<img *ngIf="note.rating >= ratingOpt" src="./assets/svg/star_full.svg" alt="{{ratingOpt}}">
+					<img *ngIf="note.rating < ratingOpt" src="/assets/svg/star_empty.svg" alt="{{ratingOpt}}">
+					<img *ngIf="note.rating >= ratingOpt" src="/assets/svg/star_full.svg" alt="{{ratingOpt}}">
 				</div>
 			</div>
 			<p><strong>Tasting Notes:</strong> {{note.notes}}</p>

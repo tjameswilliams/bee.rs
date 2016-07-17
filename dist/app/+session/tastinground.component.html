@@ -3,13 +3,13 @@
 		<small>of {{session.status.total_beers}}</small>
 	</h2>
 	<div class="splash">
-		<img src="./assets/svg/beer.svg" alt="Beer Splash">
+		<img src="/assets/svg/beer.svg" alt="Beer Splash">
 	</div>
 	<label>Rating</label>
 	<div class="rating">
 		<div *ngFor="let ratingOpt of ratingRange" (click)="setRating(ratingOpt)">
-			<img *ngIf="notes.note.rating < ratingOpt" src="./assets/svg/star_empty.svg" alt="{{ratingOpt}}">
-			<img *ngIf="notes.note.rating >= ratingOpt" src="./assets/svg/star_full.svg" alt="{{ratingOpt}}">
+			<img *ngIf="notes.note.rating < ratingOpt" src="/assets/svg/star_empty.svg" alt="{{ratingOpt}}">
+			<img *ngIf="notes.note.rating >= ratingOpt" src="/assets/svg/star_full.svg" alt="{{ratingOpt}}">
 		</div>
 	</div>
 	<label for="beer_guess">What beer is this?</label>
@@ -37,8 +37,8 @@
 			<p>{{rating.name}}</p>
 			<div class="rating">
 				<div *ngFor="let ratingOpt of ratingRange">
-					<img *ngIf="rating.rating < ratingOpt" src="./assets/svg/star_empty.svg" alt="{{ratingOpt}}">
-					<img *ngIf="rating.rating >= ratingOpt" src="./assets/svg/star_full.svg" alt="{{ratingOpt}}">
+					<img *ngIf="rating.rating < ratingOpt" src="/assets/svg/star_empty.svg" alt="{{ratingOpt}}">
+					<img *ngIf="rating.rating >= ratingOpt" src="/assets/svg/star_full.svg" alt="{{ratingOpt}}">
 				</div>
 			</div>
 		</div>

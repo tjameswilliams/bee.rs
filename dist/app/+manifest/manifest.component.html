@@ -1,7 +1,7 @@
 <div class="container">
 	<h2>Beer Manifest</h2>
   <div class="splash">
-    <img src="./assets/svg/beers.svg" alt="Beers Splash" class="smaller">
+    <img src="/assets/svg/beers.svg" alt="Beers Splash" class="smaller">
   </div>
 	<ol *ngIf="beers.list.length" class="manifest">
 		<li *ngFor="let beer of beers.list; let i = index" (click)="goToBeer(beer.id)">
