@@ -1,9 +1,0 @@
-<div class="container">
-  <h2>You're The Host!</h2>
-  <div class="form">
-    <label for="session-name">What's your name?</label>
-    <input #hostName [(ngModel)]="host.name" (keyup.enter)="keyUp()" placeholder="host name">
-    <p *ngIf="session.error">Please your name so everyone knows who the host is!</p>
-  </div>
-  <div class="button primary" (click)="submitSession()">Submit</div>
-</div>

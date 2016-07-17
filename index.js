@@ -6,7 +6,7 @@ var express = require('express'),
 	fs = require('fs');
 
 app.use(express.static(path.join(__dirname, '/')));
-app.use(express.static(path.join(__dirname, '/dist/dev/')));
+app.use(express.static(path.join(__dirname, '/dist/app/')));
 
 io.on('connection', (socket) => {
 
@@ -214,7 +214,7 @@ io.on('connection', (socket) => {
 
 app.get('*', function (req, res) {
 	res.set('Content-Type', 'text/html');
-  res.send(fs.readFileSync(__dirname+'/dist/dev/index.html'));
+  res.send(fs.readFileSync(__dirname+'/dist/app/index.html'));
 });
 
 server.listen(3000, function () {
