@@ -15,6 +15,10 @@ to set it up on a linux based machine. For extra credit, I highly recommend usin
 a [Raspberry Pi](https://www.amazon.com/Vilros-Raspberry-Basic-Starter-Kit--Clear/dp/B01D92SSX6/)
 as your server.
 
+**Prerequisites**
+- NodeJS
+- MySQL 
+
 **General Installation**
 - Log into a terminal.
 - enter `cd ~`
