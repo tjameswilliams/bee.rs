@@ -112,3 +112,33 @@ and how many guesses they got correct! I like to enhance the gamification by
 giving the winner a prized beer!
 
 ![Summary](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/summary.png?raw=true "Summary")
+
+## Tasting
+
+Tasting is the fun role! Tasters will simply visit the application's URL to get started.
+The application will ask for your name.
+
+![Log In](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/login.png?raw=true "Log In")
+
+Once logged in, you'll hang out in the lobby where you can see realtime as all of
+your fellow tasters pile in! Once everything is ready and the host has started
+the first tasting session, you'll be presented with the tasting notes!
+
+![Tasting Notes](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/tasting_notes.png?raw=true "Tasting Notes")
+
+To get the most out of your experience, I highly recommend using a [good tasting
+guide](http://beerology.ca/how-to-taste-beer/) to help you pick out the notable
+components of each beer. Once you've thoroughly enjoyed this round, give an honest
+rating and your best guess! When you're done, you can hang out in the lobby where
+you can see your fellow taster's ratings for that beer.
+
+![Round Complete](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/tasting_notes.png?raw=true "Round Complete")
+
+As soon as the host has moved on to the next round, you'll be presented with a fresh
+notes screen along with your new beer. (you might notice you can no longer guess
+any beer you've picked in a previous round!) Pick wisely!
+
+At the end of the session, you'll get a summary of how many guesses everyone got
+correct. You'll also get a list of all rounds you participated in and all of
+your notes for each. It might surprise you how you rate each choice when you don't
+know which is which!
