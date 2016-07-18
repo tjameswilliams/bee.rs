@@ -103,4 +103,12 @@ beer ID that should be served this round. Serve some beer!
 ![Host a Round](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/serve.png?raw=true "Host a Round")
 
 During each session you'll be given a live view of all of the tasters that have
-completed their tasting notes. Once all of your tasters have completed, click 'Next Beer.' 
+completed their tasting notes. Once all of your tasters have completed, click 'Next Beer.'
+Every time you move to a new round, the system picks a random beer, (note they
+are not in order of the manifest!) That would just be too easy to guess!
+
+Once all beers are complete, the app will present you with a summary of tasters
+and how many guesses they got correct! I like to enhance the gamification by
+giving the winner a prized beer!
+
+![Summary](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/summary.png?raw=true "Summary")
