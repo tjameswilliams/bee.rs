@@ -17,7 +17,7 @@ as your server.
 
 **Prerequisites**
 - NodeJS
-- MySQL 
+- MySQL
 
 **General Installation**
 - Log into a terminal.
@@ -136,7 +136,7 @@ components of each beer. Once you've thoroughly enjoyed this round, give an hone
 rating and your best guess! When you're done, you can hang out in the lobby where
 you can see your fellow taster's ratings for that beer.
 
-![Round Complete](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/tasting_notes.png?raw=true "Round Complete")
+![Round Complete](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/round_complete.png?raw=true "Round Complete")
 
 As soon as the host has moved on to the next round, you'll be presented with a fresh
 notes screen along with your new beer. (you might notice you can no longer guess
