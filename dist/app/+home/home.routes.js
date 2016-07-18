@@ -6,3 +6,4 @@ exports.HomeRoutes = [
         component: index_1.HomeComponent
     }
 ];
+//# sourceMappingURL=home.routes.js.map
