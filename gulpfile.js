@@ -1,6 +1,7 @@
 'use strict';
 let gulp = require('gulp');
 let ts = require('gulp-typescript');
+let nodemon = require('gulp-nodemon');
 
 gulp.task('copy_assets', () => {
 	return gulp.src(['./src/**/*', '!./**/*.ts'])
@@ -14,6 +15,13 @@ gulp.task('compile_ts', () => {
 		.pipe(gulp.dest('dist/app'));
 });
 
-gulp.task('watch', () => {
+gulp.task('start', () => {
+	nodemon({
+		script: 'index.js',
+		ext: 'js',
+  })
+});
+
+gulp.task('watch', ['start'], () => {
 	gulp.watch('src/app/**/*', ['copy_assets','compile_ts']);
 });
