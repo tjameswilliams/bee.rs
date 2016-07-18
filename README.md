@@ -69,11 +69,38 @@ server {
 - Exit and save `ctrl + x`
 - Start NGINX by running `sudo /etc/init.d/nginx start`
 - Now follow the **General Installation** instructions above.
-- Verify your application is running by visiting your pi's IP address in a web browser!
+- Verify your application is running by visiting your Pi's IP address in a web browser!
 
 ## Hosting a Tasting Session
 
+### The Setup
+
 Once your the application is up and running you should see the splash screen.
+
 ![Splash Screen](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/splash.png?raw=true "Splash Screen")
+
 Click [Start Now] to get started. Since you are the first user, you will assume the
-role of 'host.' The system will ask you to 
+role of 'host.' The system will ask you to name your session, then give your name.
+Once you've done this, you are ready to start manifesting your beers! Click 'Add a Beer'
+and enter your beer's details.
+
+![Beer Manifest](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/manifest.png?raw=true "Beer Manifest")
+
+Once you've entered the details of your beer, you'll be provided with a random 4
+digit code. Attach this code to your beer somehow and remove any identifying labeling
+on the beer. _Remember, this is **blind** beer tasting_, The object is for the host
+to be in the dark about the beers as well! If you are doing Abbey style beers with
+large bottles, I suggest putting them in a paper bag because the bottle is pretty
+distinctive for most imports! Rinse and repeat until all of your beers are manifested.
+Once done click the 'Done Adding Beers' button. You'll be placed into the lobby
+which will show all tasters that have connected!
+
+### The Session
+
+When everyone is ready click 'Start the Session'. The app will prompt you with the
+beer ID that should be served this round. Serve some beer!
+
+![Host a Round](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/serve.png?raw=true "Host a Round")
+
+During each session you'll be given a live view of all of the tasters that have
+completed their tasting notes. Once all of your tasters have completed, click 'Next Beer.' 
