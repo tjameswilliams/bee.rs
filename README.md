@@ -1,4 +1,4 @@
-# The Open Source Beer Tasting App
+# The Open Source Beer Tasting App :beers:
 
 This self hosted web application was designed to facilitate easy blind tasting
 sessions where all participants can taste beers and give feedback without knowing
@@ -6,7 +6,7 @@ what they are drinking. Participants get to show off their beer chops by guessin
 in each round which beer is which. At the end of the session, all participants are
 ranked for accuracy and each round is revealed to them.
 
-**CAUTION: This may change how you think about beer!**
+**CAUTION: This may change how you think about beer! :beer:**
 
 ## Installation
 
