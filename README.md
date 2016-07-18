@@ -70,3 +70,10 @@ server {
 - Start NGINX by running `sudo /etc/init.d/nginx start`
 - Now follow the **General Installation** instructions above.
 - Verify your application is running by visiting your pi's IP address in a web browser!
+
+## Hosting a Tasting Session
+
+Once your the application is up and running you should see the splash screen.
+![Splash Screen](https://github.com/tjameswilliams/bee.rs/blob/master/screenshots/splash.png?raw=true "Splash Screen")
+Click [Start Now] to get started. Since you are the first user, you will assume the
+role of 'host.' The system will ask you to 
