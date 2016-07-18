@@ -1,6 +1,7 @@
 {
   "name": "beer-tasting-app",
   "version": "1.0.0",
+	"description": "Open Source Beer Tasting App",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "lite": "lite-server",
