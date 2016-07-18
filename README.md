@@ -15,13 +15,17 @@ to set it up on a linux based machine. For extra credit, I highly recommend usin
 a [Raspberry Pi](https://www.amazon.com/Vilros-Raspberry-Basic-Starter-Kit--Clear/dp/B01D92SSX6/)
 as your server.
 
-- Open up a terminal window.
-- enter 'cd ~'
-- Clone the git Repo 'git clone https://github.com/tjameswilliams/bee.rs.git'
-- Enter the directory 'cd bee.rs'
-- run 'npm install' (could take a minute or so)
+- Log into a terminal.
+- enter `cd ~`
+- Clone the git `Repo git clone https://github.com/tjameswilliams/bee.rs.git`
+- Enter the directory `cd bee.rs`
+- run `npm install` (could take a minute or so)
 - The app is installed!
 - Install the database, open up your favorite MySQL editor for your local version of mysql, below are the terminal directions:
-- run 'mysql -uroot -p' supply your root password for mysql
-- Copy the entire contents of ~/bee.rs/seeds/database_seed.sql into the mysql command line. (it should automatically create the DB)
+- run `mysql -uroot -p` supply your root password for mysql
+- Copy the entire contents of `~/bee.rs/seeds/database_seed.sql` into the mysql command line. (it should automatically create the DB)
 Done!
+
+**To run a local (or development version)**
+- use `gulp watch` to launch the application.
+- Open `127.0.0.1:3000` to verify the installation worked!
