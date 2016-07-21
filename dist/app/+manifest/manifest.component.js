@@ -20,13 +20,10 @@ var ManifestComponent = (function () {
         this.session = session;
     }
     ManifestComponent.prototype.ngOnInit = function () {
-        var self = this;
-        this.session.initialized.subscribe(function (session_id) {
-            self.beers.getBeers();
+        var _this = this;
+        this.session.init().subscribe(function () {
+            _this.beers.getBeers().subscribe(function () { });
         });
-        if (this.session.id) {
-            self.beers.getBeers();
-        }
     };
     ManifestComponent.prototype.addBeer = function () {
         this.router.navigate(['/beer-editor']);

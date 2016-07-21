@@ -24,12 +24,11 @@ export class BeerEditorComponent implements OnInit, AfterViewInit {
 		private router: Router
 	) { }
 	ngOnInit() {
-		var self = this;
 		this.beer = this.beers.newBeer();
 		this.sub = this.route.params.subscribe(params => {
 		if( params['id'] ) {
 			let id = +params['id']; // (+) converts string 'id' to a number
-      self.beers.getBeer(id, (beer: Beer) => self.beer = beer);
+      this.beers.getBeer(id).subscribe((beer: Beer) => this.beer = beer);
 		}
    });
 	}
@@ -37,30 +36,26 @@ export class BeerEditorComponent implements OnInit, AfterViewInit {
     this.brandInput.first.nativeElement.focus();
   }
 	save() {
-		var self = this;
 		this.beer.error = '';
 		if( this.beer.name.trim() === '' ) {
 			this.beer.error = 'Please name this beer!';
 		} else {
-			this.beers.saveBeer(this.beer, function(res: any) {
-				if( !self.beer.id ) {
-					self.beers.getBeer(res.insertId, function(beer: Beer) {
-						console.log(beer);
-						self.beer = beer;
-						console.log(self.beer);
-						self.confirmId= true;
+			this.beers.saveBeer(this.beer).subscribe((res: any) => {
+				if( !this.beer.id ) {
+					this.beers.getBeer(res.insertId).subscribe((beer: Beer) => {
+						this.beer = beer;
+						this.confirmId= true;
 					});
 				} else {
-					self.router.navigate(['/beer-manifest']);
+					this.router.navigate(['/beer-manifest']);
 				}
 			});
 		}
 
 	}
 	delete() {
-		var self = this;
-		this.beers.deleteBeer(self.beer.id, function() {
-			self.router.navigate(['/beer-manifest']);
+		this.beers.deleteBeer(this.beer.id).subscribe(() => {
+			this.router.navigate(['/beer-manifest']);
 		});
 	}
 }

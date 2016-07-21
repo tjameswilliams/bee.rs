@@ -18,27 +18,22 @@ export class TasterComponent implements OnInit {
 		private router: Router
 	) { }
 	ngOnInit() {
-		var self = this;
 		this.user.setUserType('taster');
 		if( this.session.id ) {
 			this.user.setSessionId(this.session.id);
 		} else {
-			this.session.init(false);
-			this.session.initialized.subscribe(function(session_id: number) {
-				self.user.setSessionId(self.session.id);
+			this.session.init().subscribe((session_id: any) => {
+				this.user.setSessionId(this.session.id);
 			});
 		}
-
 	}
 	ngAfterViewInit() {
     this.userInput.first.nativeElement.focus();
   }
 	submit() {
-    var self = this;
-    if( self.user.setUserName() ) {
-      self.user.saveUser(() => {
-        //self.router.navigate(['/please-wait']);
-        self.user.getAppContext();
+    if( this.user.setUserName() ) {
+      this.user.saveUser().subscribe(() => {
+        this.user.getAppContext();
       });
     }
   }

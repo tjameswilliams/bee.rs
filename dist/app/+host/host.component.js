@@ -19,16 +19,18 @@ var HostComponent = (function () {
         this.session = session;
         this.router = router;
         host.setUserType('host');
-        host.setSessionId(session.id);
+        session.init().subscribe(function () {
+            host.setSessionId(session.id);
+        });
     }
     HostComponent.prototype.ngAfterViewInit = function () {
         this.hostInput.first.nativeElement.focus();
     };
     HostComponent.prototype.submit = function () {
-        var self = this;
-        if (self.host.setUserName()) {
-            self.host.saveUser(function () {
-                self.router.navigate(['/info-manifest']);
+        var _this = this;
+        if (this.host.setUserName()) {
+            this.host.saveUser().subscribe(function () {
+                _this.router.navigate(['/info-manifest']);
             });
         }
     };

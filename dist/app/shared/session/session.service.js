@@ -10,100 +10,112 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var socket_service_1 = require('./../socket/socket.service');
+var Observable_1 = require('rxjs/Observable');
 var SessionService = (function () {
     function SessionService(io) {
         this.io = io;
-        this.initialized = new core_1.EventEmitter();
+        this.initiated = false;
+        this.id = null;
+        this.name = null;
+        this.error = null;
+        this.status = null;
     }
-    SessionService.prototype.init = function (cb) {
-        var self = this;
-        this.io.socket.emit('sessions:getOpenSession', function (session) {
-            if (session.id) {
-                self.setSession(session);
-            }
-            else {
-                self.initialized.next(false);
-            }
-            if (cb) {
-                cb();
-            }
-        });
+    SessionService.prototype.init = function () {
+        var _this = this;
         this.io.socket.on('sessions:broadcastStatus', function (status) {
             setTimeout(function () {
-                self.status = status;
+                _this.status = status;
             });
         });
         this.io.socket.on('sessions:setSession', function (session) {
-            self.setSession(session);
+            _this.setSession(session);
+        });
+        return new Observable_1.Observable(function (obs) {
+            if (_this.initiated && _this.id) {
+                obs.next(_this.id);
+            }
+            else {
+                _this.io.socket.emit('sessions:getOpenSession', function (session) {
+                    if (session.id) {
+                        _this.setSession(session);
+                        obs.next(session.id);
+                    }
+                    else {
+                        obs.next(false);
+                    }
+                    _this.initiated = true;
+                });
+            }
         });
     };
     SessionService.prototype.setSession = function (session) {
         this.id = session.id;
         this.name = session.session_name;
-        this.initialized.next(session.id);
     };
     SessionService.prototype.setName = function () {
-        var self = this;
-        if (self.name.trim() === '' || self.name.length < 1) {
-            self.error = 'Please supply a name for this session!';
+        var _this = this;
+        if (this.name.trim() === '' || this.name.length < 1) {
+            this.error = 'Please supply a name for this session!';
         }
-        else {
-            self.io.socket.emit('sessions:createSession', { name: self.name }, function (res) {
-                self.id = res.id;
+        return new Observable_1.Observable(function (observer) {
+            _this.io.socket.emit('sessions:createSession', { name: _this.name }, function (res) {
+                _this.id = res.id;
+                observer.next();
             });
-        }
+        });
     };
-    SessionService.prototype.advanceSession = function (beer_id, cb) {
-        this.io.socket.emit('sessions:advanceSession', {
-            beer_id: beer_id,
-            session_id: this.id
-        }, function (res) {
-            cb(res);
+    SessionService.prototype.advanceSession = function (beer_id) {
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.io.socket.emit('sessions:advanceSession', {
+                beer_id: beer_id,
+                session_id: _this.id
+            }, function (res) {
+                obs.next(res);
+            });
         });
     };
     SessionService.prototype.getSessionStatus = function () {
-        var self = this;
-        if (!self.id) {
-            self.init(function () {
-                self.getSessionStatus();
+        var _this = this;
+        this.status = null;
+        return new Observable_1.Observable(function (obs) {
+            _this.init().subscribe(function () {
+                _this.io.socket.emit('sessions:sessionStatus', _this.id, function (status) {
+                    _this.status = status;
+                    obs.next();
+                });
             });
-        }
-        else {
-            self.status = null;
-            self.io.socket.emit('sessions:sessionStatus', self.id, function (status) {
-                self.status = status;
-            });
-        }
-    };
-    SessionService.prototype.getLeaderBoard = function (cb) {
-        var self = this;
-        if (!self.id) {
-            self.init(function () {
-                self.getLeaderBoard(cb);
-            });
-        }
-        else {
-            self.io.socket.emit('sessions:getLeaderBoard', self.id, function (leaderboard) {
-                cb(leaderboard);
-            });
-        }
-    };
-    SessionService.prototype.closeSession = function (cb) {
-        var self = this;
-        self.io.socket.emit('sessions:closeSession', self.id, function () {
-            cb();
         });
     };
-    SessionService.prototype.getStartRoute = function (cb) {
-        var self = this;
-        self.io.socket.emit('sessions:startRoute', function (route) {
-            cb(route);
+    SessionService.prototype.getLeaderBoard = function () {
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.init().subscribe(function () {
+                _this.io.socket.emit('sessions:getLeaderBoard', _this.id, function (leaderboard) {
+                    obs.next(leaderboard);
+                });
+            });
         });
     };
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], SessionService.prototype, "initialized", void 0);
+    SessionService.prototype.closeSession = function () {
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.init().subscribe(function () {
+                _this.io.socket.emit('sessions:closeSession', _this.id, function () {
+                    _this.id = null;
+                    obs.next();
+                });
+            });
+        });
+    };
+    SessionService.prototype.getStartRoute = function () {
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.io.socket.emit('sessions:startRoute', function (route) {
+                obs.next(route);
+            });
+        });
+    };
     SessionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [socket_service_1.SocketService])

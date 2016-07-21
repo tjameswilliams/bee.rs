@@ -21,12 +21,12 @@ var BeerEditorComponent = (function () {
         this.confirmId = false;
     }
     BeerEditorComponent.prototype.ngOnInit = function () {
-        var self = this;
+        var _this = this;
         this.beer = this.beers.newBeer();
         this.sub = this.route.params.subscribe(function (params) {
             if (params['id']) {
                 var id = +params['id'];
-                self.beers.getBeer(id, function (beer) { return self.beer = beer; });
+                _this.beers.getBeer(id).subscribe(function (beer) { return _this.beer = beer; });
             }
         });
     };
@@ -34,31 +34,29 @@ var BeerEditorComponent = (function () {
         this.brandInput.first.nativeElement.focus();
     };
     BeerEditorComponent.prototype.save = function () {
-        var self = this;
+        var _this = this;
         this.beer.error = '';
         if (this.beer.name.trim() === '') {
             this.beer.error = 'Please name this beer!';
         }
         else {
-            this.beers.saveBeer(this.beer, function (res) {
-                if (!self.beer.id) {
-                    self.beers.getBeer(res.insertId, function (beer) {
-                        console.log(beer);
-                        self.beer = beer;
-                        console.log(self.beer);
-                        self.confirmId = true;
+            this.beers.saveBeer(this.beer).subscribe(function (res) {
+                if (!_this.beer.id) {
+                    _this.beers.getBeer(res.insertId).subscribe(function (beer) {
+                        _this.beer = beer;
+                        _this.confirmId = true;
                     });
                 }
                 else {
-                    self.router.navigate(['/beer-manifest']);
+                    _this.router.navigate(['/beer-manifest']);
                 }
             });
         }
     };
     BeerEditorComponent.prototype.delete = function () {
-        var self = this;
-        this.beers.deleteBeer(self.beer.id, function () {
-            self.router.navigate(['/beer-manifest']);
+        var _this = this;
+        this.beers.deleteBeer(this.beer.id).subscribe(function () {
+            _this.router.navigate(['/beer-manifest']);
         });
     };
     __decorate([

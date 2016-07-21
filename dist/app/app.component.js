@@ -25,20 +25,20 @@ var AppComponent = (function () {
         this.window = window;
     }
     AppComponent.prototype.ngOnInit = function () {
-        var self = this;
-        this.user.init(function (session_id) {
+        var _this = this;
+        this.user.init().subscribe(function (session_id) {
             if (session_id) {
-                self.session.init(false);
+                _this.session.init();
             }
         });
-        self.window.addEventListener('focus', function () {
-            self.focusWindow();
+        this.window.addEventListener('focus', function () {
+            _this.focusWindow();
         });
     };
     AppComponent.prototype.setSocketEvents = function () {
-        var self = this;
+        var _this = this;
         this.io.socket.on('session:initSession', function () {
-            self.session.init(false);
+            _this.session.init();
         });
     };
     AppComponent.prototype.focusWindow = function () {

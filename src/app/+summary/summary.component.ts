@@ -26,18 +26,14 @@ export class SummaryComponent implements OnInit {
 		private notes: NoteService
 	) {}
 	ngOnInit(): void {
-		var self = this;
-		this.session.getLeaderBoard(function(leaderboard: any) {
-			self.leaderboard = leaderboard;
+		this.session.getLeaderBoard().subscribe((leaderboard: any) => {
+			this.leaderboard = leaderboard;
 		});
-		this.user.init(function() {
-			self.user.getSummary();
-		});
+		this.user.getSummary().subscribe();
   }
 	closeSession(): void {
-		var self = this;
-		this.session.closeSession(function() {
-			self.sessionClosed = true;
+		this.session.closeSession().subscribe(() => {
+			this.sessionClosed = true;
 		});
 	}
 }

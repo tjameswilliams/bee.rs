@@ -19,13 +19,9 @@ export class ManifestComponent implements OnInit {
 		private session: SessionService
 	) { }
 	ngOnInit() {
-		var self = this;
-		this.session.initialized.subscribe(function(session_id: number) {
-			self.beers.getBeers();
+		this.session.init().subscribe(() => {
+			this.beers.getBeers().subscribe(() => {});
 		});
-		if( this.session.id ) {
-			self.beers.getBeers();
-		}
 	}
 	addBeer() {
 		this.router.navigate(['/beer-editor']);

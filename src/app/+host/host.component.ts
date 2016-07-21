@@ -22,16 +22,17 @@ export class HostComponent implements AfterViewInit {
     private router: Router
   ) {
     host.setUserType('host');
-    host.setSessionId(session.id);
+		session.init().subscribe(() => {
+			host.setSessionId(session.id);
+		});
   }
   ngAfterViewInit() {
     this.hostInput.first.nativeElement.focus();
   }
   submit() {
-    var self = this;
-    if( self.host.setUserName() ) {
-      self.host.saveUser(() => {
-        self.router.navigate(['/info-manifest']);
+    if( this.host.setUserName() ) {
+      this.host.saveUser().subscribe(() => {
+        this.router.navigate(['/info-manifest']);
       });
     }
   }

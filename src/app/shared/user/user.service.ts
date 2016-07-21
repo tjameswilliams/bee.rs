@@ -2,9 +2,11 @@ import { Injectable }    from '@angular/core';
 import { CookieService } from 'angular2-cookie/core';
 import { SocketService } from '../socket/socket.service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
+	public initiated: boolean= false;
 	public id: number;
 	public session_id: number;
 	public name: string;
@@ -25,57 +27,59 @@ export class UserService {
 			date: tomorrow
 		};
 	}
-	init(cb: Function) {
-		var self = this,
-			userId = self.cookies.get('user_id');
+	init(): Observable<any> {
+		var userId = this.cookies.get('user_id');
 		// because this is a shared state application, the system is responsible for
 		// broadcasting path changes.
-    this.io.socket.on('route:redirect', function(route: any) {
-      self.redirect(route);
+    this.io.socket.on('route:redirect', (route: any) => {
+      this.redirect(route);
     });
-		this.io.socket.on('users:userAdded', function(user: any) {
-      self.users.push(user);
+		this.io.socket.on('users:userAdded', (user: any) => {
+      this.users.push(user);
     });
-		if( userId ) {
-			// if we know the user, we make sure he/she still exists in the system.
-			self.io.socket.emit('users:getUser',
-				userId,
-				function(user: any) {
-					if( user && user.id ) {
-						self.id = user.id;
-						self.name = user.name;
-						self.user_type = user.user_type;
-						self.session_id = user.session_id;
-						self.cookies.put('user_id', self.id.toString(), this.cookieOptions);
-						cb(user.session_id);
-					} else {
-						// --> no current user was found.
-						self.cookies.removeAll();
-						cb(false);
-					}
-					self.getAppContext();
-			});
-		} else {
-			cb(false);
-			self.getAppContext();
-		}
-	}
-	getAppContext() {
-		this.io.socket.emit('appContext:getRoute', this.id);
-	}
-	getUsers() {
-		var self = this;
-		this.io.socket.emit('users:getUsers', function(users: any) {
-			self.users = users;
+		// if we know the user, we make sure he/she still exists in the system.
+		return new Observable((obs: any) => {
+			if( !userId ) {
+				obs.next(false);
+			} else if( this.initiated && this.name ) {
+				obs.next(this.session_id);
+			} else {
+				this.io.socket.emit('users:getUser',
+					userId,
+					(user: any) => {
+						if( user && user.id ) {
+							this.id = user.id;
+							this.name = user.name;
+							this.user_type = user.user_type;
+							this.session_id = user.session_id;
+							this.cookies.put('user_id', this.id.toString(), this.cookieOptions);
+							obs.next(user.session_id);
+						} else {
+							// --> no current user was found.
+							this.cookies.removeAll();
+							obs.next(false);
+						}
+						this.getAppContext();
+						this.initiated = true;
+				});
+			}
 		});
 	}
-	setSessionId(sessionId: number) {
+	getAppContext(): void {
+		this.io.socket.emit('appContext:getRoute', this.id);
+	}
+	getUsers(): void {
+		this.io.socket.emit('users:getUsers', (users: any) => {
+			this.users = users;
+		});
+	}
+	setSessionId(sessionId: number): void {
 		this.session_id = sessionId;
 	}
-	setUserType(userType: string) {
+	setUserType(userType: string): void {
 		this.user_type = userType;
 	}
-	setUserName() {
+	setUserName(): boolean {
 		if( this.name.trim() === '' || this.name.trim().length < 2 ) {
 			this.error = 'Please tell your partygoers who you are!';
 			return false;
@@ -83,33 +87,34 @@ export class UserService {
 			return true;
 		}
 	}
-	saveUser(cb: Function) {
-		var self = this;
-		this.io.socket.emit('users:createUser', {
-			name: self.name,
-			user_type: self.user_type,
-			session_id: self.session_id
-		}, function(res: any) {
-			self.id = res.insertId;
-			self.cookies.put('user_id', self.id.toString(), this.cookieOptions);
-			cb();
-		});
+	saveUser(): Observable<any> {
+		return new Observable((obs: any) => {
+			this.io.socket.emit('users:createUser', {
+				name: this.name,
+				user_type: this.user_type,
+				session_id: this.session_id
+			}, (res: any) => {
+				this.id = res.insertId;
+				this.cookies.put('user_id', this.id.toString(), this.cookieOptions);
+				obs.next();
+			});
+		})
 	}
-	redirect(route: any) {
+	redirect(route: any): void {
     console.log(route);
-		var self = this;
-		if( self.router.url !== route && ['/beer-manifest','/beer-editor','/start-session'].indexOf(self.router.url) === -1 ) {
+		if( this.router.url !== route && (['/beer-manifest','/beer-editor','/start-session'].indexOf(this.router.url) === -1 || !this.id) ) {
 			console.log('redirected');
-			self.router.navigateByUrl(route);
-			//.location.reload();
+			this.router.navigateByUrl(route);
 		}
   }
-	getSummary() {
-		var self = this;
-		console.log('gettingSummary');
-		self.io.socket.emit('notes:getSummary', this.id, function(summary: any) {
-			console.log(summary);
-			self.summary = summary;
+	getSummary(): Observable<any> {
+		return new Observable((obs: any) => {
+			this.init().subscribe(() => {
+				this.io.socket.emit('notes:getSummary', this.id, (summary: any) => {
+					this.summary = summary;
+					obs.next();
+				});
+			});
 		});
 	}
 }

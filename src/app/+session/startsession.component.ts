@@ -20,9 +20,8 @@ export class StartSessionComponent implements OnInit {
 		this.user.getUsers();
 	}
 	startSession() {
-    var self = this;
-    this.session.advanceSession(null, function(res: any) {
-      self.router.navigate(['/host-round/'+res.id]);
+    this.session.advanceSession(null).subscribe((res: any) => {
+      this.router.navigate(['/host-round/'+res.id]);
     });
 	}
 }

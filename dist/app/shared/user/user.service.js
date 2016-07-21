@@ -12,11 +12,13 @@ var core_1 = require('@angular/core');
 var core_2 = require('angular2-cookie/core');
 var socket_service_1 = require('../socket/socket.service');
 var router_1 = require('@angular/router');
+var Observable_1 = require('rxjs/Observable');
 var UserService = (function () {
     function UserService(io, cookies, router) {
         this.io = io;
         this.cookies = cookies;
         this.router = router;
+        this.initiated = false;
         this.users = [];
         var tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -25,43 +27,49 @@ var UserService = (function () {
             date: tomorrow
         };
     }
-    UserService.prototype.init = function (cb) {
-        var self = this, userId = self.cookies.get('user_id');
+    UserService.prototype.init = function () {
+        var _this = this;
+        var userId = this.cookies.get('user_id');
         this.io.socket.on('route:redirect', function (route) {
-            self.redirect(route);
+            _this.redirect(route);
         });
         this.io.socket.on('users:userAdded', function (user) {
-            self.users.push(user);
+            _this.users.push(user);
         });
-        if (userId) {
-            self.io.socket.emit('users:getUser', userId, function (user) {
-                if (user && user.id) {
-                    self.id = user.id;
-                    self.name = user.name;
-                    self.user_type = user.user_type;
-                    self.session_id = user.session_id;
-                    self.cookies.put('user_id', self.id.toString(), this.cookieOptions);
-                    cb(user.session_id);
-                }
-                else {
-                    self.cookies.removeAll();
-                    cb(false);
-                }
-                self.getAppContext();
-            });
-        }
-        else {
-            cb(false);
-            self.getAppContext();
-        }
+        return new Observable_1.Observable(function (obs) {
+            if (!userId) {
+                obs.next(false);
+            }
+            else if (_this.initiated && _this.name) {
+                obs.next(_this.session_id);
+            }
+            else {
+                _this.io.socket.emit('users:getUser', userId, function (user) {
+                    if (user && user.id) {
+                        _this.id = user.id;
+                        _this.name = user.name;
+                        _this.user_type = user.user_type;
+                        _this.session_id = user.session_id;
+                        _this.cookies.put('user_id', _this.id.toString(), _this.cookieOptions);
+                        obs.next(user.session_id);
+                    }
+                    else {
+                        _this.cookies.removeAll();
+                        obs.next(false);
+                    }
+                    _this.getAppContext();
+                    _this.initiated = true;
+                });
+            }
+        });
     };
     UserService.prototype.getAppContext = function () {
         this.io.socket.emit('appContext:getRoute', this.id);
     };
     UserService.prototype.getUsers = function () {
-        var self = this;
+        var _this = this;
         this.io.socket.emit('users:getUsers', function (users) {
-            self.users = users;
+            _this.users = users;
         });
     };
     UserService.prototype.setSessionId = function (sessionId) {
@@ -79,32 +87,36 @@ var UserService = (function () {
             return true;
         }
     };
-    UserService.prototype.saveUser = function (cb) {
-        var self = this;
-        this.io.socket.emit('users:createUser', {
-            name: self.name,
-            user_type: self.user_type,
-            session_id: self.session_id
-        }, function (res) {
-            self.id = res.insertId;
-            self.cookies.put('user_id', self.id.toString(), this.cookieOptions);
-            cb();
+    UserService.prototype.saveUser = function () {
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.io.socket.emit('users:createUser', {
+                name: _this.name,
+                user_type: _this.user_type,
+                session_id: _this.session_id
+            }, function (res) {
+                _this.id = res.insertId;
+                _this.cookies.put('user_id', _this.id.toString(), _this.cookieOptions);
+                obs.next();
+            });
         });
     };
     UserService.prototype.redirect = function (route) {
         console.log(route);
-        var self = this;
-        if (self.router.url !== route && ['/beer-manifest', '/beer-editor', '/start-session'].indexOf(self.router.url) === -1) {
+        if (this.router.url !== route && (['/beer-manifest', '/beer-editor', '/start-session'].indexOf(this.router.url) === -1 || !this.id)) {
             console.log('redirected');
-            self.router.navigateByUrl(route);
+            this.router.navigateByUrl(route);
         }
     };
     UserService.prototype.getSummary = function () {
-        var self = this;
-        console.log('gettingSummary');
-        self.io.socket.emit('notes:getSummary', this.id, function (summary) {
-            console.log(summary);
-            self.summary = summary;
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.init().subscribe(function () {
+                _this.io.socket.emit('notes:getSummary', _this.id, function (summary) {
+                    _this.summary = summary;
+                    obs.next();
+                });
+            });
         });
     };
     UserService = __decorate([

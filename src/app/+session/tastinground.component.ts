@@ -29,17 +29,16 @@ export class TastingRoundComponent implements OnInit {
 		private notes: NoteService
 	) {}
 	ngOnInit(): void {
-    var self = this;
     this.sub = this.route.params.subscribe(params => {
   		if( params['id'] ) {
   			let id = +params['id']; // (+) converts string 'id' to a number
-				self.beers.getBeer(id, (beer: Beer) => {
-					self.beer = beer;
-					self.notes.init(beer.id,self.user.id);
+				this.beers.getBeer(id).subscribe((beer: Beer) => {
+					this.beer = beer;
+					this.notes.init(beer.id,this.user.id);
+					this.session.getSessionStatus().subscribe();
 				});
   		}
-			self.session.getSessionStatus();
-			self.complete = false;
+			this.complete = false;
   	});
   }
 	setRating(rating: number): void {
@@ -49,10 +48,9 @@ export class TastingRoundComponent implements OnInit {
 		return Boolean(this.notes.note.rating && this.notes.note.notes && this.notes.note.notes.length > 0 && this.notes.note.beer_guess);
 	}
 	done(): void {
-		var self = this;
-		this.notes.save(function() {
-			self.complete = true;
-			self.notes.getRatings();
+		this.notes.save().subscribe(() => {
+			this.complete = true;
+			this.notes.getRatings().subscribe();
 		});
 	}
 }

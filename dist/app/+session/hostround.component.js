@@ -24,23 +24,25 @@ var HostRoundComponent = (function () {
         this.ratingRange = [1, 2, 3, 4, 5];
     }
     HostRoundComponent.prototype.ngOnInit = function () {
-        var self = this;
-        this.sub = this.route.params.subscribe(function (params) {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
             if (params['id']) {
                 var id = +params['id'];
-                self.beers.getBeer(id, function (beer) { return self.beer = beer; });
+                _this.beers.getBeer(id).subscribe(function (beer) {
+                    _this.beer = beer;
+                    _this.session.getSessionStatus().subscribe();
+                });
             }
-            self.session.getSessionStatus();
         });
     };
     HostRoundComponent.prototype.nextRound = function () {
-        var self = this;
-        this.session.advanceSession(self.beer.id, function (res) {
+        var _this = this;
+        this.session.advanceSession(this.beer.id).subscribe(function (res) {
             if (res.id) {
-                self.router.navigate(['/host-round/' + res.id]);
+                _this.router.navigate(['/host-round/' + res.id]);
             }
             else {
-                self.router.navigate(['/summary']);
+                _this.router.navigate(['/summary']);
             }
         });
     };

@@ -26,18 +26,16 @@ var SummaryComponent = (function () {
         this.sessionClosed = false;
     }
     SummaryComponent.prototype.ngOnInit = function () {
-        var self = this;
-        this.session.getLeaderBoard(function (leaderboard) {
-            self.leaderboard = leaderboard;
+        var _this = this;
+        this.session.getLeaderBoard().subscribe(function (leaderboard) {
+            _this.leaderboard = leaderboard;
         });
-        this.user.init(function () {
-            self.user.getSummary();
-        });
+        this.user.getSummary().subscribe();
     };
     SummaryComponent.prototype.closeSession = function () {
-        var self = this;
-        this.session.closeSession(function () {
-            self.sessionClosed = true;
+        var _this = this;
+        this.session.closeSession().subscribe(function () {
+            _this.sessionClosed = true;
         });
     };
     SummaryComponent = __decorate([

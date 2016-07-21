@@ -14,8 +14,6 @@ import { Beer } from './../shared/beers/beer';
   providers: [BeersService]
 })
 export class HostRoundComponent implements OnInit {
-  sub: any;
-  status: any;
   beer: Beer;
 	confirmNextRound: boolean= false;
 	ratingRange: any= [1,2,3,4,5];
@@ -27,22 +25,22 @@ export class HostRoundComponent implements OnInit {
     private session: SessionService
 	) {}
 	ngOnInit() {
-    var self = this;
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
   		if( params['id'] ) {
   			let id = +params['id']; // (+) converts string 'id' to a number
-        self.beers.getBeer(id, (beer: Beer) => self.beer = beer);
+        this.beers.getBeer(id).subscribe((beer: Beer) => {
+					this.beer = beer;
+					this.session.getSessionStatus().subscribe();
+				});
   		}
-			self.session.getSessionStatus();
   	});
   }
 	nextRound() {
-		var self = this;
-		this.session.advanceSession(self.beer.id, function(res: any) {
+		this.session.advanceSession(this.beer.id).subscribe((res: any) => {
 			if( res.id ) {
-				self.router.navigate(['/host-round/'+res.id]);
+				this.router.navigate(['/host-round/'+res.id]);
 			} else {
-				self.router.navigate(['/summary']);
+				this.router.navigate(['/summary']);
 			}
     });
 	}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>Beer Tasting Unit Tests</title>
+
+	<link rel="stylesheet" href="../../node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
+
+	<script src="../../node_modules/core-js/client/shim.min.js"></script>
+	<script src="../../node_modules/zone.js/dist/zone.js"></script>
+	<script src="../../node_modules/zone.js/dist/async-test.js"></script>
+	<script src="../../node_modules/reflect-metadata/Reflect.js"></script>
+
+	<script src="../../node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
+	<script src="../../node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
+	<script src="../../node_modules/jasmine-core/lib/jasmine-core/boot.js"></script>
+
+</head>
+<body>
+	<script src="../../node_modules/systemjs/dist/system.src.js"></script>
+	<script>
+	// map tells the System loader where to look for things
+  var map = {
+    'app':                        '/dist/app', // 'dist',
+    '@angular':                   '/node_modules/@angular',
+    'angular2-in-memory-web-api': '/node_modules/angular2-in-memory-web-api',
+    'rxjs':                       '/node_modules/rxjs',
+		'socket.io-client': '/node_modules/socket.io-client/socket.io.js',
+    'angular2-cookie': '/node_modules/angular2-cookie'
+  };
+  // packages tells the System loader how to load when no filename and/or no extension
+  var packages = {
+    'app':                        { main: 'main.js',  defaultExtension: 'js' },
+    'rxjs':                       { defaultExtension: 'js' },
+    'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+		'socket.io-client': {'defaultExtension': 'js'},
+    'angular2-cookie': { main: 'core.js',  defaultExtension: 'js' },
+		'/': {defaultExtension: 'js'}
+  };
+  var ngPackageNames = [
+    'common',
+    'compiler',
+    'core',
+    'forms',
+    'http',
+    'platform-browser',
+    'platform-browser-dynamic',
+    'router',
+    'router-deprecated',
+    'upgrade',
+  ];
+  // Individual files (~300 requests):
+  function packIndex(pkgName) {
+    packages['@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
+  }
+  // Bundled (~40 requests):
+  function packUmd(pkgName) {
+    packages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
+  }
+  // Most environments should use UMD; some (Karma) need the individual index files
+  var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
+  // Add package entries for angular packages
+  ngPackageNames.forEach(setPackageConfig);
+  var config = {
+    map: map,
+    packages: packages
+  };
+  System.config(config);
+		// System.config({
+		// 	packages: {
+		// 		'/shared': {defaultExtension: 'js'}
+		// 	},
+		// });
+
+		System.import('/shared/session/session.spec')
+			.then(window.onload)
+				.catch(console.error.bind(console));
+	</script>
+</body>
+</html>

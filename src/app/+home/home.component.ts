@@ -3,9 +3,6 @@ import { Router } from '@angular/router';
 import { REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 import { SessionService } from './../shared/session/session.service';
 
-/**
- * This class represents the lazy loaded HomeComponent.
- */
 @Component({
   moduleId: module.id,
   selector: 'sd-home',
@@ -15,30 +12,28 @@ import { SessionService } from './../shared/session/session.service';
   providers: []
 })
 export class HomeComponent {
-  creatingSession = false;
+  creatingSession: boolean = false;
 
   constructor(
 		private session: SessionService,
 		private router: Router
 	) {}
 
-  start(sessionName: any) {
-		var self = this;
-		this.session.getStartRoute(function(route: string) {
+  start(sessionName: any): void {
+		this.session.getStartRoute().subscribe( (route: string) => {
 			if( route === '/new-taster' ) {
-				self.router.navigate([route]);
+				this.router.navigate([route]);
 			} else {
-				self.creatingSession = true;
+				this.creatingSession = true;
 		    setTimeout(() => {
 		      sessionName.focus();
 		    },10);
 			}
 		});
-
   }
 
-  submitSession() {
-    this.session.setName();
+  submitSession(): void {
+    this.session.setName().subscribe();
   }
 
 }

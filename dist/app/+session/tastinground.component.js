@@ -27,17 +27,17 @@ var TastingRoundComponent = (function () {
         this.complete = false;
     }
     TastingRoundComponent.prototype.ngOnInit = function () {
-        var self = this;
+        var _this = this;
         this.sub = this.route.params.subscribe(function (params) {
             if (params['id']) {
                 var id = +params['id'];
-                self.beers.getBeer(id, function (beer) {
-                    self.beer = beer;
-                    self.notes.init(beer.id, self.user.id);
+                _this.beers.getBeer(id).subscribe(function (beer) {
+                    _this.beer = beer;
+                    _this.notes.init(beer.id, _this.user.id);
+                    _this.session.getSessionStatus().subscribe();
                 });
             }
-            self.session.getSessionStatus();
-            self.complete = false;
+            _this.complete = false;
         });
     };
     TastingRoundComponent.prototype.setRating = function (rating) {
@@ -47,10 +47,10 @@ var TastingRoundComponent = (function () {
         return Boolean(this.notes.note.rating && this.notes.note.notes && this.notes.note.notes.length > 0 && this.notes.note.beer_guess);
     };
     TastingRoundComponent.prototype.done = function () {
-        var self = this;
-        this.notes.save(function () {
-            self.complete = true;
-            self.notes.getRatings();
+        var _this = this;
+        this.notes.save().subscribe(function () {
+            _this.complete = true;
+            _this.notes.getRatings().subscribe();
         });
     };
     TastingRoundComponent = __decorate([

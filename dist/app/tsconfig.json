@@ -17,5 +17,5 @@
     "noFallthroughCasesInSwitch": true,
 		"outDir": "../../dist/app"
   },
-  "compileOnSave": true
+  "compileOnSave": false
 }

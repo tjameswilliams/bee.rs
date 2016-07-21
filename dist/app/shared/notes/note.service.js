@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var socket_service_1 = require('./../socket/socket.service');
 var note_1 = require('./note');
+var Observable_1 = require('rxjs/Observable');
 var NoteService = (function () {
     function NoteService(io) {
         this.io = io;
@@ -18,38 +19,43 @@ var NoteService = (function () {
         this.ratings = false;
     }
     NoteService.prototype.init = function (beer_id, user_id) {
-        var self = this;
-        self.io.socket.emit('notes:getNote', {
+        var _this = this;
+        this.io.socket.emit('notes:getNote', {
             user_id: user_id,
             beer_id: beer_id
         }, function (note) {
             if (note.id) {
-                self.note = new note_1.Note(note);
+                _this.note = new note_1.Note(note);
             }
             else {
-                self.note = new note_1.Note();
-                self.note.setBeerId(beer_id);
-                self.note.setUserId(user_id);
-                self.note.beer_guess_options = note.beer_guess_options;
+                _this.note = new note_1.Note();
+                _this.note.setBeerId(beer_id);
+                _this.note.setUserId(user_id);
+                _this.note.beer_guess_options = note.beer_guess_options;
             }
-            console.log(self.note);
         });
-        self.io.socket.on('notes:ratingAdded', function (rating) {
-            self.updateRating(rating);
+        this.io.socket.on('notes:ratingAdded', function (rating) {
+            _this.updateRating(rating);
         });
     };
-    NoteService.prototype.save = function (cb) {
-        this.io.socket.emit('notes:save', this.note, function () {
-            cb();
+    NoteService.prototype.save = function () {
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.io.socket.emit('notes:save', _this.note, function () {
+                obs.next();
+            });
         });
     };
     NoteService.prototype.getRatings = function () {
-        var self = this;
-        self.io.socket.emit('notes:getRatings', this.note.beer_id, function (ratings) {
-            self.ratings = {};
-            for (var i = 0; i < ratings.length; i++) {
-                self.ratings[ratings[i].id] = ratings[i];
-            }
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.io.socket.emit('notes:getRatings', _this.note.beer_id, function (ratings) {
+                _this.ratings = {};
+                for (var i = 0; i < ratings.length; i++) {
+                    _this.ratings[ratings[i].id] = ratings[i];
+                }
+                obs.next();
+            });
         });
     };
     NoteService.prototype.updateRating = function (rating) {

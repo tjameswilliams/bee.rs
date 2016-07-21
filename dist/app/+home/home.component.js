@@ -19,13 +19,13 @@ var HomeComponent = (function () {
         this.creatingSession = false;
     }
     HomeComponent.prototype.start = function (sessionName) {
-        var self = this;
-        this.session.getStartRoute(function (route) {
+        var _this = this;
+        this.session.getStartRoute().subscribe(function (route) {
             if (route === '/new-taster') {
-                self.router.navigate([route]);
+                _this.router.navigate([route]);
             }
             else {
-                self.creatingSession = true;
+                _this.creatingSession = true;
                 setTimeout(function () {
                     sessionName.focus();
                 }, 10);
@@ -33,7 +33,7 @@ var HomeComponent = (function () {
         });
     };
     HomeComponent.prototype.submitSession = function () {
-        this.session.setName();
+        this.session.setName().subscribe();
     };
     HomeComponent = __decorate([
         core_1.Component({

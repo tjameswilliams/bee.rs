@@ -22,9 +22,9 @@ var StartSessionComponent = (function () {
         this.user.getUsers();
     };
     StartSessionComponent.prototype.startSession = function () {
-        var self = this;
-        this.session.advanceSession(null, function (res) {
-            self.router.navigate(['/host-round/' + res.id]);
+        var _this = this;
+        this.session.advanceSession(null).subscribe(function (res) {
+            _this.router.navigate(['/host-round/' + res.id]);
         });
     };
     StartSessionComponent = __decorate([

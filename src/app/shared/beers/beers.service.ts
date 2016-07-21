@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SocketService } from '../socket/socket.service';
 import { SessionService } from '../session/session.service';
 import { Beer } from './beer';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class BeersService {
@@ -10,29 +11,38 @@ export class BeersService {
 		private io: SocketService,
 		private session: SessionService
 	) {}
-	getBeers() {
-		var self = this;
-		this.io.socket.emit('beers:getBeers', this.session.id, function(beers: Beer[]) {
-			self.list = beers;
+	getBeers(): Observable<any> {
+		return new Observable((obs: any) => {
+			this.io.socket.emit('beers:getBeers', this.session.id, (beers: Beer[]) => {
+				this.list = beers;
+				obs.next();
+			});
 		});
 	}
-	getBeer(id: Number, cb: Function) {
-		var self = this;
-		this.io.socket.emit('beers:getBeer', id, function(beer: Beer[]) {
-			cb(beer);
+	getBeer(id: Number): Observable<any> {
+		return new Observable((obs: any) => {
+			this.io.socket.emit('beers:getBeer', id, (beer: Beer[]) => {
+				obs.next(beer);
+			});
 		});
 	}
-	newBeer() {
+	newBeer(): Beer {
 		let beer = new Beer;
 		beer.setSessionId(this.session.id);
 		return beer;
 	}
-	saveBeer(beer: Beer, cb: Function) {
-		this.io.socket.emit('beers:saveBeer', beer, cb);
+	saveBeer(beer: Beer): Observable<any> {
+		return new Observable((obs: any) => {
+			this.io.socket.emit('beers:saveBeer', beer, (res: any) => {
+				obs.next(res);
+			});
+		});
 	}
-	deleteBeer(id: number, cb: Function) {
-		this.io.socket.emit('beers:deleteBeer', id, function(res: any) {
-			cb();
+	deleteBeer(id: number): Observable<any> {
+		return new Observable((obs: any) => {
+			this.io.socket.emit('beers:deleteBeer', id, (res: any) => {
+				obs.next(res);
+			});
 		});
 	}
 }

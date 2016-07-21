@@ -33,21 +33,19 @@ export class AppComponent implements OnInit {
 		this.window = window;
   }
   ngOnInit() {
-    var self = this;
-    this.user.init(function(session_id: any) {
+    this.user.init().subscribe((session_id: any) => {
       if( session_id ) {
-        self.session.init(false);
+        this.session.init();
       }
     });
     //this.io.socket.emit('appContext:getRoute')
-    self.window.addEventListener('focus', function() {
-			self.focusWindow();
+    this.window.addEventListener('focus', () => {
+			this.focusWindow();
 		});
   }
   setSocketEvents() {
-    var self = this;
-    this.io.socket.on('session:initSession', function() {
-      self.session.init(false);
+    this.io.socket.on('session:initSession', () => {
+      this.session.init();
     });
   }
 	focusWindow() {

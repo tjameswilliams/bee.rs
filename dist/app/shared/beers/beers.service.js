@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var socket_service_1 = require('../socket/socket.service');
 var session_service_1 = require('../session/session.service');
 var beer_1 = require('./beer');
+var Observable_1 = require('rxjs/Observable');
 var BeersService = (function () {
     function BeersService(io, session) {
         this.io = io;
@@ -19,15 +20,20 @@ var BeersService = (function () {
         this.list = [];
     }
     BeersService.prototype.getBeers = function () {
-        var self = this;
-        this.io.socket.emit('beers:getBeers', this.session.id, function (beers) {
-            self.list = beers;
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.io.socket.emit('beers:getBeers', _this.session.id, function (beers) {
+                _this.list = beers;
+                obs.next();
+            });
         });
     };
-    BeersService.prototype.getBeer = function (id, cb) {
-        var self = this;
-        this.io.socket.emit('beers:getBeer', id, function (beer) {
-            cb(beer);
+    BeersService.prototype.getBeer = function (id) {
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.io.socket.emit('beers:getBeer', id, function (beer) {
+                obs.next(beer);
+            });
         });
     };
     BeersService.prototype.newBeer = function () {
@@ -35,12 +41,20 @@ var BeersService = (function () {
         beer.setSessionId(this.session.id);
         return beer;
     };
-    BeersService.prototype.saveBeer = function (beer, cb) {
-        this.io.socket.emit('beers:saveBeer', beer, cb);
+    BeersService.prototype.saveBeer = function (beer) {
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.io.socket.emit('beers:saveBeer', beer, function (res) {
+                obs.next(res);
+            });
+        });
     };
-    BeersService.prototype.deleteBeer = function (id, cb) {
-        this.io.socket.emit('beers:deleteBeer', id, function (res) {
-            cb();
+    BeersService.prototype.deleteBeer = function (id) {
+        var _this = this;
+        return new Observable_1.Observable(function (obs) {
+            _this.io.socket.emit('beers:deleteBeer', id, function (res) {
+                obs.next(res);
+            });
         });
     };
     BeersService = __decorate([

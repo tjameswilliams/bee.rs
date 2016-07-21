@@ -19,15 +19,14 @@ var TasterComponent = (function () {
         this.router = router;
     }
     TasterComponent.prototype.ngOnInit = function () {
-        var self = this;
+        var _this = this;
         this.user.setUserType('taster');
         if (this.session.id) {
             this.user.setSessionId(this.session.id);
         }
         else {
-            this.session.init(false);
-            this.session.initialized.subscribe(function (session_id) {
-                self.user.setSessionId(self.session.id);
+            this.session.init().subscribe(function (session_id) {
+                _this.user.setSessionId(_this.session.id);
             });
         }
     };
@@ -35,10 +34,10 @@ var TasterComponent = (function () {
         this.userInput.first.nativeElement.focus();
     };
     TasterComponent.prototype.submit = function () {
-        var self = this;
-        if (self.user.setUserName()) {
-            self.user.saveUser(function () {
-                self.user.getAppContext();
+        var _this = this;
+        if (this.user.setUserName()) {
+            this.user.saveUser().subscribe(function () {
+                _this.user.getAppContext();
             });
         }
     };

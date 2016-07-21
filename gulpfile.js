@@ -19,6 +19,10 @@ gulp.task('start', () => {
 	nodemon({
 		script: 'index.js',
 		ext: 'js',
+		watch: [
+			'src/app/main.js',
+			'modules/*'
+		] // we only watch 1 file because everything gets recompiled on save.
   })
 });
 
