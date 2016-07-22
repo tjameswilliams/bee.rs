@@ -34,10 +34,10 @@ var SQL = {
 		b.name,
 		b.type,
 		IF(n.id IS NULL,0,1) as used
-		FROM beers bref
-		JOIN beers b ON b.session_id = bref.session_id
+		FROM beers b
+		JOIN beers bref ON b.session_id = bref.session_id
 		LEFT JOIN notes n ON (
-			n.beer_id = b.id AND
+			n.beer_guess = b.id AND
 			n.user_id = ?
 		)
 		WHERE bref.id = ?`,
