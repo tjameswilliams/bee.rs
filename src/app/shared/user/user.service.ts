@@ -21,7 +21,7 @@ export class UserService {
 		private router: Router
 	) {
 		var tomorrow = new Date();
-		tomorrow.setDate(tomorrow.getDate() + 1);
+		tomorrow.setDate(tomorrow.getDate() + 10);
 		this.cookieOptions = {
 			path: '/',
 			date: tomorrow
