@@ -15,6 +15,7 @@ var beers_service_1 = require('./../shared/beers/beers.service');
 var session_service_1 = require('./../shared/session/session.service');
 var note_service_1 = require('./../shared/notes/note.service');
 var autosize_1 = require('./../shared/directives/autosize');
+var beervisual_component_1 = require('./beervisual.component');
 var TastingRoundComponent = (function () {
     function TastingRoundComponent(user, route, router, beers, session, notes) {
         this.user = user;
@@ -46,6 +47,9 @@ var TastingRoundComponent = (function () {
     TastingRoundComponent.prototype.isReady = function () {
         return Boolean(this.notes.note.rating && this.notes.note.notes && this.notes.note.notes.length > 0 && this.notes.note.beer_guess);
     };
+    TastingRoundComponent.prototype.selectColor = function (color) {
+        this.notes.note.details.color = color;
+    };
     TastingRoundComponent.prototype.done = function () {
         var _this = this;
         this.notes.save().subscribe(function () {
@@ -59,7 +63,7 @@ var TastingRoundComponent = (function () {
             selector: 'sd-start-session',
             templateUrl: 'tastinground.component.html',
             styleUrls: ['session.component.css'],
-            directives: [router_1.ROUTER_DIRECTIVES, autosize_1.Autosize],
+            directives: [router_1.ROUTER_DIRECTIVES, autosize_1.Autosize, beervisual_component_1.BeerVisual],
             providers: [beers_service_1.BeersService, note_service_1.NoteService]
         }), 
         __metadata('design:paramtypes', [user_service_1.UserService, router_1.ActivatedRoute, router_1.Router, beers_service_1.BeersService, session_service_1.SessionService, note_service_1.NoteService])

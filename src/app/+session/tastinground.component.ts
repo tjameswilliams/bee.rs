@@ -6,13 +6,14 @@ import { SessionService } from './../shared/session/session.service';
 import { NoteService } from './../shared/notes/note.service';
 import { Beer } from './../shared/beers/beer';
 import { Autosize } from './../shared/directives/autosize';
+import { BeerVisual } from './beervisual.component';
 
 @Component({
   moduleId: module.id,
   selector: 'sd-start-session',
   templateUrl: 'tastinground.component.html',
   styleUrls: ['session.component.css'],
-	directives: [ROUTER_DIRECTIVES,Autosize],
+	directives: [ROUTER_DIRECTIVES,Autosize,BeerVisual],
   providers: [BeersService,NoteService]
 })
 export class TastingRoundComponent implements OnInit {
@@ -46,6 +47,9 @@ export class TastingRoundComponent implements OnInit {
 	}
 	isReady(): boolean {
 		return Boolean(this.notes.note.rating && this.notes.note.notes && this.notes.note.notes.length > 0 && this.notes.note.beer_guess);
+	}
+	selectColor(color: string): void {
+		this.notes.note.details.color = color;
 	}
 	done(): void {
 		this.notes.save().subscribe(() => {

@@ -16,6 +16,10 @@ var Note = (function () {
             this.guessed_correct = note.guessed_correct ? note.guessed_correct : 0;
             this.user_id = note.user_id;
             this.session_open = note.session_open;
+            this.details = new BeerDetails(note.details);
+        }
+        else {
+            this.details = new BeerDetails(false);
         }
     }
     Note.prototype.setGuess = function (beer_guess) {
@@ -33,3 +37,53 @@ var Note = (function () {
     return Note;
 }());
 exports.Note = Note;
+var BeerDetails = (function () {
+    function BeerDetails(details) {
+        this.colorOptions = [
+            '#f7d281',
+            '#ebaa32',
+            '#dd8c00',
+            '#ce7300',
+            '#c05d00',
+            '#b34c01',
+            '#a63c00',
+            '#9a3000',
+            '#8f2400',
+            '#841a00',
+            '#7b1101',
+            '#730800',
+            '#6a0000',
+            '#600300',
+            '#5b0000',
+            '#550000',
+            '#500001',
+            '#4a0001',
+            '#440001',
+            '#400000',
+            '#3c0000',
+            '#370000',
+            '#330000',
+            '#300000',
+            '#2c0001',
+            '#290000',
+            '#260000',
+            '#230000',
+            '#220000',
+            '#1e0000',
+            '#1c0000',
+            '#1a0001',
+            '#180000',
+            '#160100',
+            '#140001',
+            '#120000',
+            '#100000',
+            '#0e0000'
+        ];
+        this.color = '#f7d281';
+        if (details) {
+            this.color = details.color;
+            this.clarity = details.clarity;
+        }
+    }
+    return BeerDetails;
+}());

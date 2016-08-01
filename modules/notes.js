@@ -2,11 +2,12 @@
 let MySQLOb = require('./mysqlob');
 
 var SQL = {
-	upsertNote: `INSERT INTO notes (id,beer_id,user_id,beer_guess,rating,notes)
-		VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE
+	upsertNote: `INSERT INTO notes (id,beer_id,user_id,beer_guess,rating,notes,details)
+		VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE
 		beer_guess=VALUES(beer_guess),
 		rating=VALUES(rating),
-		notes=VALUES(notes)`,
+		notes=VALUES(notes),
+		details=VALUES(details)`,
 	getNoteForUserForBeer: `SELECT
 		IF(n.beer_guess = b.id,1,0) as guessed_correct,
 		b.id as beer_id,
@@ -17,6 +18,7 @@ var SQL = {
 		n.id,
 		n.rating,
 		n.notes,
+		n.details,
 		n.beer_guess,
 		g.name as guess_name,
 		g.id as guess_id,
@@ -62,6 +64,7 @@ var SQL = {
 		b.round_number,
 		CONCAT(b.brand, ' - ', b.name, ', ', b.type) as name,
 		n.notes,
+		n.details,
 		n.rating,
 		(n.beer_guess = n.beer_id) as guessed_correct,
 		CONCAT(bg.brand, ' - ', bg.name, ', ', bg.type) as guess_name
@@ -83,7 +86,8 @@ module.exports = class Beers extends MySQLOb {
 			note.user_id,
 			note.beer_guess,
 			note.rating,
-			note.notes
+			note.notes,
+			JSON.stringify(note.details)
 		],cb);
 	}
 	getNote(beerId,userId,cb) {
@@ -92,6 +96,11 @@ module.exports = class Beers extends MySQLOb {
 			if( err ) throw err;
 			if( !note.id ) {
 				note = {};
+			}
+			if( note.details && note.details.length !== 0 ) {
+				note.details = JSON.parse(note.details);
+			} else {
+				note.details = false;
 			}
 			self.doSql('getBeerOptionsForNote',[userId,beerId], (err,opts) => {
 				if( err ) throw err;

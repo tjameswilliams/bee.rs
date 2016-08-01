@@ -42,6 +42,7 @@ CREATE TABLE `notes` (
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `rating` TINYINT(1) UNSIGNED,
   `notes` TEXT,
+	`details` TEXT,
   UNIQUE KEY `user_x_beer` (`beer_id`,`user_id`),
   FOREIGN KEY (`beer_id`) REFERENCES `beers`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE

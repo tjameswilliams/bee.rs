@@ -21,7 +21,7 @@ var UserService = (function () {
         this.initiated = false;
         this.users = [];
         var tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setDate(tomorrow.getDate() + 10);
         this.cookieOptions = {
             path: '/',
             date: tomorrow

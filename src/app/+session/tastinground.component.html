@@ -3,8 +3,21 @@
 		<small>of {{session.status.total_beers}}</small>
 	</h2>
 	<div class="splash">
-		<img src="/assets/svg/beer.svg" alt="Beer Splash">
+		<beervisual [(color)]="notes.note.details.color"></beervisual>
 	</div>
+	<label>Color</label>
+	<table class="color-chart">
+		<tbody>
+			<tr>
+				<td *ngFor="let color of notes.note.details.colorOptions">
+					<div [style.background-color]="color"
+						[class.active]="notes.note.details.color === color"
+						(click)="selectColor(color)">
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 	<label>Rating</label>
 	<div class="rating">
 		<div *ngFor="let ratingOpt of ratingRange" (click)="setRating(ratingOpt)">
