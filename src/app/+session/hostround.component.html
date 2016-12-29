@@ -289,7 +289,7 @@
 	<div class="button secondary" (click)="confirmNextRound = false">
 		Cancel
 	</div>
-	<div *ngIf="session.status.taster_status.complete.length > 0 && session.status.taster_status.incomplete.length > 0" class="button" (click)="nextRound()">
+	<div *ngIf="session.status && session.status.taster_status.complete.length > 0 && session.status.taster_status.incomplete.length > 0" class="button" (click)="nextRound()">
 		Next Round
 	</div>
 </div>
