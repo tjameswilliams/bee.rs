@@ -17,6 +17,12 @@ var SQL = {
 		WHERE u.id = ?
 		AND s.session_open = 1
 		LIMIT 1;`,
+	getUserByIp: `SELECT u.*
+		FROM users u
+		JOIN sessions s ON s.id = u.session_id
+		WHERE u.ip_address = ?
+		AND s.session_open = 1
+		LIMIT 1;`,
 	getUsers: `SELECT u.*
 		FROM users u
 		JOIN sessions s ON s.id = u.session_id
@@ -40,8 +46,12 @@ module.exports = class Users extends MySQLOb {
 	getHost(sessionId,cb) {
 		this.doSql('getHostForSession',[sessionId],cb);
 	}
-	getUser(userId,cb) {
-		this.doSql('getUser',[userId],cb);
+	getUser(userId,ip_address,cb) {
+		if(userId) {
+			this.doSql('getUser',[userId],cb);
+		} else {
+			this.doSql('getUserByIp',[ip_address],cb);
+		}
 	}
 	getUsers(cb) {
 		this.doSql('getUsers',cb);

@@ -14,7 +14,8 @@ io.on('connection', (socket) => {
 	socket.on('users:getUser', (userId,cb) => {
 		var users = require(__dirname+'/modules/users');
 		users = new users();
-		users.getUser(userId,(err,user) => {
+		var ip_address = socket.handshake.headers['x-real-ip'];
+		users.getUser(userId,ip_address,(err,user) => {
 			if(err) throw err;
 			cb(user);
 		});
