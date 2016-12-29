@@ -37,10 +37,7 @@ var UserService = (function () {
             _this.users.push(user);
         });
         return new Observable_1.Observable(function (obs) {
-            if (!userId) {
-                obs.next(false);
-            }
-            else if (_this.initiated && _this.name) {
+            if (_this.initiated && _this.name && userId) {
                 obs.next(_this.session_id);
             }
             else {
@@ -102,9 +99,7 @@ var UserService = (function () {
         });
     };
     UserService.prototype.redirect = function (route) {
-        console.log(route);
         if (this.router.url !== route && (['/beer-manifest', '/beer-editor', '/start-session'].indexOf(this.router.url) === -1 || !this.id)) {
-            console.log('redirected');
             this.router.navigateByUrl(route);
         }
     };

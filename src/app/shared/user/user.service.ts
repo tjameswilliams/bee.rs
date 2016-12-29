@@ -39,9 +39,7 @@ export class UserService {
     });
 		// if we know the user, we make sure he/she still exists in the system.
 		return new Observable((obs: any) => {
-			if( !userId ) {
-				obs.next(false);
-			} else if( this.initiated && this.name ) {
+			if( this.initiated && this.name && userId ) {
 				obs.next(this.session_id);
 			} else {
 				this.io.socket.emit('users:getUser',
