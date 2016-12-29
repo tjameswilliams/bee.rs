@@ -63,7 +63,12 @@ var SQL = {
 		WHERE u.session_id = ?
 		AND u.user_type = 'taster'
 		GROUP BY u.id
-		ORDER BY SUM(IF(n.id IS NULL,0,IF(n.beer_guess =n.beer_id,1,0))) DESC`
+		ORDER BY SUM(IF(n.id IS NULL,0,IF(n.beer_guess =n.beer_id,1,0))) DESC`,
+	getSession: `SELECT
+		*
+		FROM sessions
+		WHERE id = ?
+		LIMIT 1;`
 };
 
 module.exports = class Sessions extends MySQLOb {
@@ -72,6 +77,9 @@ module.exports = class Sessions extends MySQLOb {
 	}
 	getOpenSession(cb) {
 		this.doSql('getOpenSession', cb);
+	}
+	getSession(sessionId,cb) {
+		this.doSql('getSession', [sessionId], cb);
 	}
 	createSession(session,cb) {
 		this.doSql('createSession',[session.name],cb);

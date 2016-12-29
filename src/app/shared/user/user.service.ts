@@ -101,9 +101,7 @@ export class UserService {
 		})
 	}
 	redirect(route: any): void {
-    console.log(route);
 		if( this.router.url !== route && (['/beer-manifest','/beer-editor','/start-session'].indexOf(this.router.url) === -1 || !this.id) ) {
-			console.log('redirected');
 			this.router.navigateByUrl(route);
 		}
   }

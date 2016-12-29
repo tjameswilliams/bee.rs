@@ -62,12 +62,12 @@ var SQL = {
 		WHERE n.beer_id = ?`,
 	getUserSummary: `SELECT
 		b.round_number,
-		CONCAT(b.brand, ' - ', b.name, ', ', b.type) as name,
+		b.name,
 		n.notes,
 		n.details,
 		n.rating,
 		(n.beer_guess = n.beer_id) as guessed_correct,
-		CONCAT(bg.brand, ' - ', bg.name, ', ', bg.type) as guess_name
+		bg.name as guess_name
 		FROM notes n
 		JOIN beers b ON n.beer_id = b.id
 		JOIN beers bg ON n.beer_guess = bg.id

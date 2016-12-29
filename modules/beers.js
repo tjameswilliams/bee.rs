@@ -47,7 +47,18 @@ var SQL = {
 		FROM beers
 		WHERE tasting_complete = 1
 		AND session_id = ?
-		LIMIT 1;`
+		LIMIT 1;`,
+	getBeerResults: `SELECT
+		b.round_number,
+		b.brand,
+		b.name,
+		ROUND(AVG(n.rating),1) as rating,
+		SUM(IF(n.beer_id = n.beer_guess, 0, 1)) as correct_guesses
+		FROM notes n
+		JOIN beers b ON b.id = n.beer_id
+		WHERE b.session_id = 3
+		GROUP BY n.beer_id
+		ORDER BY AVG(n.rating) DESC`
 };
 
 module.exports = class Beers extends MySQLOb {
@@ -89,6 +100,9 @@ module.exports = class Beers extends MySQLOb {
 	}
 	deleteBeer(beerId,cb) {
 		this.doSql('deleteBeer',beerId,cb);
+	}
+	getResults(sessionId,cb) {
+		this.doSql('getBeerResults',sessionId,cb);
 	}
 	nextBeer(beerId,sessionId,cb) {
 		var self = this;
