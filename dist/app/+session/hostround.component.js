@@ -37,6 +37,7 @@ var HostRoundComponent = (function () {
     };
     HostRoundComponent.prototype.nextRound = function () {
         var _this = this;
+        this.confirmNextRound = false;
         this.session.advanceSession(this.beer.id).subscribe(function (res) {
             if (res.id) {
                 _this.router.navigate(['/host-round/' + res.id]);

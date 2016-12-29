@@ -36,6 +36,7 @@ export class HostRoundComponent implements OnInit {
   	});
   }
 	nextRound() {
+    this.confirmNextRound = false;
 		this.session.advanceSession(this.beer.id).subscribe((res: any) => {
 			if( res.id ) {
 				this.router.navigate(['/host-round/'+res.id]);
