@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
 	socket.on('users:createUser', (user,cb) => {
 		var users = require(__dirname+'/modules/users');
 		users = new users();
-		user.ip_address = socket.handshake.headers['x-forwarded-for'];
+		user.ip_address = socket.handshake.headers['x-real-ip'];
 		users.upsertUser(user,(err,res) => {
 			if(err) throw err;
 			cb(res);
